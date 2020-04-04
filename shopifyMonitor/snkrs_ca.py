@@ -104,18 +104,17 @@ def monitor_snkrs(base_url, api_url):
                 requests.headers = OrderedDict(headers)
                 r = requests.get(url= url, proxies = proxy).text
                 #retrive the objects from the json list
-                #current_status = json.loads(r)["objects"]
-                current_status = json.loads(r)["data"]["filteredProductsWithContext"]["objects"]
-                nike = Nike(current_status, 'nike_ca')
+                current_status = json.loads(r)["objects"]
+                nike = Nike(current_status, 'snkrs_ca')
                 diff = findDiff(nike.current_status_ana(), json.loads((nike.query_db()).status))
-                print(diff)
+
 
                 #notify discord for all the items
                 if len(diff) != 0:
                         for item in current_status:
                             try:
                                 if item["id"] in diff:
-                                    call_discord_nike(base_url, item)
+                                    call_discord(base_url, item)
                             except Exception as e:
                                 print(e)
                                 pass
@@ -186,7 +185,6 @@ def monitor_nike(base_url, api_url):
 
         except Exception as e:
             time.sleep(randint(30,60))
-            print(r)
             print("error is ")
             print(e)
 
@@ -211,14 +209,16 @@ if(__name__ == "__main__"):
     positive_keywords = ["jordan", "sacai", "fear", "mars", "landing", "dunk"]
     negative_keywords = ['shirt', 't-shirt', 'short', 'sock', 'cap', 'singlet', 'tee', 'leggings']
     ##### Must match accordingly #####
+    # try:
+    #     monitor_snkrs(snkrs_ca_base_url, api_snkr_ca)
     try:
         with concurrent.futures.ThreadPoolExecutor() as player:
-            for num in range(10):
+            for num in range(1, 10):
                 if num % 2 == 0:
-                    player.submit(monitor_nike(nike_ca_base_url, api_nike_ca))
+                    player.submit(monitor_nike,nike_ca_base_url, api_nike_ca)
                 else:
-                    player.submit(monitor_snkrs(snkrs_ca_base_url,api_snkr_ca))
+                    player.submit(monitor_snkrs,snkrs_ca_base_url,api_snkr_ca)
     except Exception as e:
         print(e)
 
-    monitor_nike(nike_ca_base_url, api_nike_ca)
+    #monitor_nike(nike_ca_base_url, api_nike_ca)

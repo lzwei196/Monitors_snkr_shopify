@@ -154,7 +154,6 @@ def checkStock(num):
 
 if __name__ == '__main__':
     try:
-
         with concurrent.futures.ThreadPoolExecutor() as player:
             for num in range(10):
                 player.submit(checkStock, num)
