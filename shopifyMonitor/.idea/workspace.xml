@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e40bc4b3-e7ab-42df-8f5a-2aa3eadabc0e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/shopifyMonitor$proxyTest.coverage" NAME="proxyTest Coverage Results" MODIFIED="1553572147425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$test.coverage" NAME="test Coverage Results" MODIFIED="1553751798001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$webhooktest.coverage" NAME="webhooktest Coverage Results" MODIFIED="1553691069698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$shopifyMonitor.coverage" NAME="shopifyMonitor Coverage Results" MODIFIED="1553818034840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$ShopifyMonitor2.coverage" NAME="ShopifyMonitor2 Coverage Results" MODIFIED="1553785774094" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$shopifyWebhook.coverage" NAME="shopifyWebhook Coverage Results" MODIFIED="1553689664328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$shopifyMonitor3.coverage" NAME="shopifyMonitor3 Coverage Results" MODIFIED="1554258324993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1SJPGDzo4Ru5WsG68d3aQg1yRNf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Monitor\shopifyMonitor (1)\shopifyMonitor" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.shopifyMonitor">
+    <configuration name="ShopifyMonitor2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="shopifyMonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ShopifyMonitor2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="flask_sqlalchemy_db (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="shopifyMonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/flask_sqlalchemy_db.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="flask_sqlalchemy_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="shopifyMonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\leo\Desktop\New folder\shopifyMonitor_filter\shopifyMonitor_filter\shopifyMonitor 2\shopifyMonitor\flask_sqlalchemy_db.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="shopifyMonitor" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="shopifyMonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/shopifyMonitor.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test_db" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="shopifyMonitor" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_db.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.shopifyMonitor" />
+        <item itemvalue="Python.ShopifyMonitor2" />
+        <item itemvalue="Python.flask_sqlalchemy_db (1)" />
+        <item itemvalue="Python.test_db" />
+        <item itemvalue="Python.flask_sqlalchemy_db" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e40bc4b3-e7ab-42df-8f5a-2aa3eadabc0e" name="Default Changelist" comment="" />
+      <created>1553497887429</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1553497887429</updated>
+      <workItem from="1553497898799" duration="33706000" />
+      <workItem from="1553648040283" duration="43070000" />
+      <workItem from="1553844719913" duration="2199000" />
+      <workItem from="1554256985320" duration="2353000" />
+      <workItem from="1554894335694" duration="21000" />
+      <workItem from="1554894440743" duration="98000" />
+      <workItem from="1554894652602" duration="140000" />
+      <workItem from="1559722018256" duration="5762000" />
+      <workItem from="1559881804732" duration="110000" />
+      <workItem from="1560352531491" duration="343000" />
+      <workItem from="1560353045660" duration="137000" />
+      <workItem from="1560857077286" duration="64000" />
+      <workItem from="1561615771907" duration="883000" />
+      <workItem from="1571278629298" duration="8387000" />
+      <workItem from="1576349509041" duration="2759000" />
+      <workItem from="1576635651508" duration="22000" />
+      <workItem from="1576635759870" duration="29000" />
+      <workItem from="1576635885033" duration="5112000" />
+      <workItem from="1584814356295" duration="6206000" />
+      <workItem from="1584899599634" duration="7739000" />
+      <workItem from="1584915382383" duration="13300000" />
+      <workItem from="1585004824184" duration="16000" />
+      <workItem from="1585005103313" duration="371000" />
+      <workItem from="1585005486447" duration="5000" />
+      <workItem from="1585005533347" duration="1230000" />
+      <workItem from="1585011370349" duration="314000" />
+      <workItem from="1585011926798" duration="607000" />
+      <workItem from="1585164140933" duration="7007000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="772" y="161" width="1089" height="781" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584898952796">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state x="772" y="161" width="1089" height="781" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.4096.1152@0.0.4096.1152" timestamp="1584898952796" />
+    <state x="2068" y="232" key="FileChooserDialogImpl" timestamp="1584979012268">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state x="2068" y="232" key="FileChooserDialogImpl/0.0.4096.1152@0.0.4096.1152" timestamp="1584979012268" />
+    <state width="1980" height="3" key="GridCell.Tab.0.bottom" timestamp="1585184450759">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="3" key="GridCell.Tab.0.bottom/0.0.4096.1152@0.0.4096.1152" timestamp="1585184450759" />
+    <state width="1980" height="3" key="GridCell.Tab.0.center" timestamp="1585184450759">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="3" key="GridCell.Tab.0.center/0.0.4096.1152@0.0.4096.1152" timestamp="1585184450759" />
+    <state width="1980" height="3" key="GridCell.Tab.0.left" timestamp="1585184450759">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="3" key="GridCell.Tab.0.left/0.0.4096.1152@0.0.4096.1152" timestamp="1585184450759" />
+    <state width="1980" height="3" key="GridCell.Tab.0.right" timestamp="1585184450759">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="3" key="GridCell.Tab.0.right/0.0.4096.1152@0.0.4096.1152" timestamp="1585184450759" />
+    <state width="1980" height="288" key="GridCell.Tab.1.bottom" timestamp="1585179682838">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="288" key="GridCell.Tab.1.bottom/0.0.4096.1152@0.0.4096.1152" timestamp="1585179682838" />
+    <state width="1980" height="288" key="GridCell.Tab.1.center" timestamp="1585179682837">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="288" key="GridCell.Tab.1.center/0.0.4096.1152@0.0.4096.1152" timestamp="1585179682837" />
+    <state width="1980" height="288" key="GridCell.Tab.1.left" timestamp="1585179682837">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="288" key="GridCell.Tab.1.left/0.0.4096.1152@0.0.4096.1152" timestamp="1585179682837" />
+    <state width="1980" height="288" key="GridCell.Tab.1.right" timestamp="1585179682838">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state width="1980" height="288" key="GridCell.Tab.1.right/0.0.4096.1152@0.0.4096.1152" timestamp="1585179682838" />
+    <state x="587" y="3" key="SettingsEditor" timestamp="1584899565052">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state x="587" y="3" key="SettingsEditor/0.0.4096.1152@0.0.4096.1152" timestamp="1584899565052" />
+    <state x="1377" y="251" width="1288" height="747" key="dock-window-1" timestamp="1584902511970">
+      <screen x="0" y="0" width="4096" height="1152" />
+    </state>
+    <state x="1377" y="251" width="1288" height="747" key="dock-window-1/0.0.4096.1152@0.0.4096.1152" timestamp="1584902511970" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/shopifyMonitor$ShopifyMonitor2.coverage" NAME="ShopifyMonitor2 Coverage Results" MODIFIED="1584906465017" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$travis.coverage" NAME="travis Coverage Results" MODIFIED="1576349628894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$shopifyMonitor3.coverage" NAME="shopifyMonitor3 Coverage Results" MODIFIED="1584814383805" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$flask_monitor.coverage" NAME="flask_monitor Coverage Results" MODIFIED="1584900755728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$flask_sqlalchemy_db__1_.coverage" NAME="flask_sqlalchemy_db (1) Coverage Results" MODIFIED="1584903463673" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$shopifyMonitor.coverage" NAME="shopifyMonitor Coverage Results" MODIFIED="1585184450752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/shopifyMonitor$test_db.coverage" NAME="test_db Coverage Results" MODIFIED="1584903197428" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
