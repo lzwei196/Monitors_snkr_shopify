@@ -5,7 +5,7 @@ from time import sleep
 def notifyDisc(cartList, imageUrl, Link, title, price, type='newly added'):
     sleep(0.3)
 
-    webhook_url = 'https://discordapp.com/api/webhooks/558102754107850772/6EAMHz1EuKyN2428spOpCT6WgdBDuGzp2Vk46428nvfuxkY9Dn7Fg-mXZ9_WwpZd5PRx'
+    webhook_url = "link here"
    # if (carts == 1):
 
     webhook = DiscordWebhook(url=webhook_url)
@@ -25,7 +25,7 @@ def notifyDisc(cartList, imageUrl, Link, title, price, type='newly added'):
 def notifyDisc_key(cartList, imageUrl, Link, title, price, type='newly added'):
     sleep(0.3)
 
-    webhook_url = 'https://discordapp.com/api/webhooks/628273795983081500/PwyoFg5wafFEpeecPO9RlnDyXpJD0pYJLUOIZhMpx_wC4GJaQexOlh48ogzlsI8YszfP'
+    webhook_url = "link here"
    # if (carts == 1):
 
     webhook = DiscordWebhook(url=webhook_url)
@@ -45,7 +45,7 @@ def notifyDisc_key(cartList, imageUrl, Link, title, price, type='newly added'):
 def notifyDisc_unfilteded(cartList, imageUrl, Link, title, price, type='newly added'):
     sleep(0.3)
 
-    webhook_url = 'https://discordapp.com/api/webhooks/656672291463233587/To5Zc09urpQEni2byUOoJK7OvNWkBjO3vIuWTqCEdXzNhuIQVJTFsddkHQ9Nw1CRpYka'
+    webhook_url = "link here"
    # if (carts == 1):
 
     webhook = DiscordWebhook(url=webhook_url)
@@ -64,7 +64,7 @@ def notifyDisc_unfilteded(cartList, imageUrl, Link, title, price, type='newly ad
 
 def notifyDisc_snkrs(image_url, link, title, price, active, style_code, exclusiveAccess, availability, method="N/A", date="N/A"):
 
-    webhook_url = 'https://discordapp.com/api/webhooks/695019469688275014/ZmmQYPAstfR-g9sumR4wUjCfzfKH0zqhcf4B3ryxC_KNyCwWezvTlpAKLyjhTNXK35sh'
+    webhook_url = "link here"
 
     webhook = DiscordWebhook(url=webhook_url)
 
@@ -86,7 +86,7 @@ def notifyDisc_snkrs(image_url, link, title, price, active, style_code, exclusiv
     webhook.execute()
 
 def notifyDisc_snkrs_non_product(image_url, link, title, date, description):
-    webhook_url = 'https://discordapp.com/api/webhooks/695019469688275014/ZmmQYPAstfR-g9sumR4wUjCfzfKH0zqhcf4B3ryxC_KNyCwWezvTlpAKLyjhTNXK35sh'
+    webhook_url = 'link here'
 
     webhook = DiscordWebhook(url=webhook_url)
 
@@ -102,7 +102,7 @@ def notifyDisc_snkrs_non_product(image_url, link, title, date, description):
 
 def notifyDisc_nike(image_url, link, title, price, active, style_code, availability, date):
 
-    webhook_url = 'https://discordapp.com/api/webhooks/695019469688275014/ZmmQYPAstfR-g9sumR4wUjCfzfKH0zqhcf4B3ryxC_KNyCwWezvTlpAKLyjhTNXK35sh'
+    webhook_url = 'link here'
 
     webhook = DiscordWebhook(url=webhook_url)
 
@@ -122,7 +122,7 @@ def notifyDisc_nike(image_url, link, title, price, active, style_code, availabil
     webhook.execute()
 
 def notifyDisc_bestbuy(title, link, type, availability):
-    webhook_url = "https://discordapp.com/api/webhooks/695488518964772864/pfn_IZ5OlAi2-kPdBT5tW_QLSyCNmA7p6A1nob12HrLNmNI8VhCkhsF-0IDeSxJiGoY-"
+    webhook_url = "link here"
     webhook = DiscordWebhook(url=webhook_url)
 
     # general description
