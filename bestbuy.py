@@ -25,7 +25,7 @@ def best_buy_monitor():
                 user_agent_rotator = UserAgent(software_names=software_names, operating_systems=operating_systems, limit=100)
 
                 best_buy_base_url = "https://www.bestbuy.ca/en-ca/product/"
-                best_buy_api_url = "https://www.bestbuy.ca/ecomm-api/availability/products?accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&accept-language=en-CA&skus="
+                best_buy_api_url = "https://www.bestbuy.ca/ecomm-api/availability/products?accept=application%2Fvnd.bestbuy.standardproduct.v1%2Bjson&accept-language=en-CA&postalCode=H3J2T7&skus="
                 old_status_db = best_buy.query.all()
 
                 for item in old_status_db:
@@ -47,9 +47,8 @@ def best_buy_monitor():
                             'accept-encoding': 'gzip, deflate, br',
                             'accept-language': 'en-US,en;q=0.9'
                         }
-                        requests.headers = OrderedDict(headers)
                         url = best_buy_api_url + id
-                        r = requests.get(url=url).text.encode().decode('utf-8-sig')
+                        r = requests.get(url=url,headers=headers).text.encode().decode('utf-8-sig')
                         avail = json.loads(r)["availabilities"][0]
                         shipping_status = avail["shipping"]["purchasable"]
                         instore_status = avail["pickup"]["purchasable"]

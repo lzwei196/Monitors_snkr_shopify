@@ -203,14 +203,6 @@ if(__name__ == "__main__"):
     api_nike_cn = "https://api.nike.com/cic/browse/v1?queryid=filteredProductsWithContext&anonymousId=V7KpaHChtIdYMZ4P4eDSi&uuids=0f64ecc7-d624-4e91-b171-b83a03dd8550,16633190-45e5-4830-a068-232ac7aea82c&language=zh-Hans&country=CN&channel=NIKE&sortBy=newest"
     nike_ca_base_url = "https://www.nike.com/cn/u/"
     snkrs_ca_base_url = "https://www.nike.com/cn/launch/t/"
-    country_codes = ['CN', 'JP', 'CA', 'US', 'GB']
-    country_codes_2 = ['zh-Hans', 'ja', 'en-GB', 'en', 'en-GB']
-    ##### Must match accordingly #####
-    positive_keywords = ["jordan", "sacai", "fear", "mars", "landing", "dunk"]
-    negative_keywords = ['shirt', 't-shirt', 'short', 'sock', 'cap', 'singlet', 'tee', 'leggings']
-    ##### Must match accordingly #####
-    # try:
-    #     monitor_snkrs(snkrs_ca_base_url, api_snkr_ca)
     try:
         with concurrent.futures.ThreadPoolExecutor() as player:
             for num in range(1, 10):
@@ -219,6 +211,7 @@ if(__name__ == "__main__"):
                 else:
                     player.submit(monitor_snkrs,snkrs_ca_base_url,api_snkr_cn)
     except Exception as e:
-        print(e)
+        # print(e)
+        pass
 
     #monitor_nike(nike_ca_base_url, api_nike_ca)

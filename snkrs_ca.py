@@ -153,6 +153,7 @@ def monitor_nike(base_url, api_url):
             # retrive the objects from the json list
             # current_status = json.loads(r)["objects"]
             current_status = json.loads(r)["data"]["filteredProductsWithContext"]["objects"]
+            print(current_status)
             #create the nike object
             nike = Nike(current_status, 'nike_ca')
             #get the status from db, and retrieve the id from the current status that retrived from api
@@ -219,6 +220,7 @@ if(__name__ == "__main__"):
                 else:
                     player.submit(monitor_snkrs,snkrs_ca_base_url,api_snkr_ca)
     except Exception as e:
-        print(e)
+        #print(e)
+        pass
 
     #monitor_nike(nike_ca_base_url, api_nike_ca)

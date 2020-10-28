@@ -1,13 +1,33 @@
 import time
 import json
 import requests
-from bs4 import BeautifulSoup
 from shopifyWebhook import notifyDisc, notifyDisc_unfilteded
 from random import randint
 from flask_sqlalchemy_db import db, Sites
 import random
 import concurrent.futures
-import secrets
+import os
+def load_proxy(file_path: str):
+    """
+           Reads a text file with proxies
+           :param file_path: Path to proxy file with proxies in <user>:<pas>@<ip>:<port> format each on one line
+           """
+    lst = []
+    if file_path:
+        if os.path.exists(file_path):
+            with open(file_path, 'r') as file:
+                lst = [x for x in file.read().split('\n') if x.strip()]
+                return lst
+        else:
+            print('File: {}. Does not exist.'.format(file_path))
+
+def parse_proxy(proxy):
+    ip, port, name, password = proxy.split(':')
+    return {
+    "http": f"http://{name}:{password}@{ip}:{port}",
+    "https": f"http://{name}:{password}@{ip}:{port}",
+    'ftp_proxy':f"http://{name}:{password}@{ip}:{port}"
+    }
 
 def loadJSON():
     try:
@@ -56,6 +76,7 @@ def callNotif(data, i, val):
 
 
 def checkRestock(dataList, sneakerData, i, site):
+
     try:
         for data, value in sneakerData.items():
             try:
@@ -84,6 +105,7 @@ def loadKeyword():
     return keyword_string
 
 def checkStock(num):
+    proxy = load_proxy('proxy.text')
     while True:
         shopifyList = loadJSON()
         if num == 0 or num % 2 == 0:
@@ -94,12 +116,12 @@ def checkStock(num):
         try:
             # go through all the sites
             for i in the_list:
+                the_proxy = parse_proxy(random.choice(proxy))
             #for i in (shopifyList):
                 #i = secrets.choice(shopifyList)
                 site = i['Name'].replace(".", "").replace("//", "").replace(":", "")
-                proxy = loadProxy()
                 headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0'}
-                source = requests.get(i['Name']+"/products.json", headers=headers, proxies=proxy).text
+                source = requests.get(i['Name']+"/products.json", headers=headers, proxies=the_proxy).text
                 soup = json.loads(source)
                 listData = (soup["products"])
                 idList = {}
@@ -144,6 +166,8 @@ def checkStock(num):
                         db.session.commit()
                     except Exception as e:
                         print(e)
+                        print(i)
+                        print(soup)
                     # check if there is new restock
                     # checkRestock(idList, sneakerDatas, i['Name'], site)
             time.sleep(randint(15, 30))
@@ -154,7 +178,6 @@ def checkStock(num):
 
 if __name__ == '__main__':
     try:
-
         with concurrent.futures.ThreadPoolExecutor() as player:
             for num in range(10):
                 player.submit(checkStock, num)
