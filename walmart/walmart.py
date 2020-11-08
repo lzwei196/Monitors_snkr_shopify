@@ -2,6 +2,12 @@ import requests
 import json
 import datetime
 import time
+#link for test
+#currently every single call that have been made during the checkout process are established
+#stucked at submit payment
+#cookie is mandetory, and cookie includes the bucket info. the bucket id wouldnt change under the same cookie.
+
+
 product_link = 'https://www.walmart.ca/en/ip/rca-32-led-hd-tv/6000197280858'
 header = {
     'origin': 'https://www.walmart.ca',
