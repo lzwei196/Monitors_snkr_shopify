@@ -219,6 +219,7 @@ if(__name__ == "__main__"):
                     player.submit(monitor_nike,nike_ca_base_url, api_nike_ca)
                 else:
                     player.submit(monitor_snkrs,snkrs_ca_base_url,api_snkr_ca)
+                time.sleep(2)
     except Exception as e:
         #print(e)
         pass

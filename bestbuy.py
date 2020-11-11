@@ -76,5 +76,6 @@ if(__name__ == "__main__"):
         with concurrent.futures.ThreadPoolExecutor() as player:
             for num in range(10):
                 player.submit(best_buy_monitor)
+                time.sleep(2)
     except Exception as e:
         print(e)

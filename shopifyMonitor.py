@@ -92,13 +92,6 @@ def checkRestock(dataList, sneakerData, i, site):
         pass
 
 
-def loadProxy():
-    with open("proxy.json") as proxy_list:
-        proxy = json.load(proxy_list)
-        # print(proxy)
-        proxiesid = {'http': "http://" + random.choice(proxy)}
-    return proxiesid
-
 def loadKeyword():
     with open("keywords.json") as keyword:
         keyword_string = json.load(keyword)
@@ -181,6 +174,7 @@ if __name__ == '__main__':
         with concurrent.futures.ThreadPoolExecutor() as player:
             for num in range(10):
                 player.submit(checkStock, num)
+                time.sleep(2)
     except Exception as e:
         print(e)
 
