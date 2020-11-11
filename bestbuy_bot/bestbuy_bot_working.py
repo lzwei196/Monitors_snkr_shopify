@@ -243,6 +243,7 @@ proxies = load_proxy('proxy.text')
 while True:
     the_proxy = parse_proxy(random.choice(proxies))
     try:
+        #When creating the bestbuy obj, its default to use proxy and only checkout once, u can pass in different params.
         bestbuy = bestbuy(the_proxy)
     except Exception as e:
         pass
