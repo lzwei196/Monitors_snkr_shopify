@@ -4,6 +4,7 @@ import datetime
 import time
 from shopifyMonitor import load_proxy, parse_proxy
 import random
+from bestbuy_bot.selenium_support import *
 
 ########################### General param ##########################
 ####REPLACE the address, credit card info in the submit shipping, payment and order section
@@ -59,7 +60,14 @@ class bestbuy:
             # sleep = random.randint(1, 10)
             # print(f"sleep {sleep}")
             # time.sleep(sleep)
-
+    def set_cookies(self):
+        crawler = Bestbuy('../chromedriver.exe', headless=False)
+        crawler.login()
+        cookies = crawler.browser.get_cookies()
+        for cookie in cookies:
+            self.session.cookies.set(cookie['name'], cookie['value'])
+            print(cookie['name'], cookie['value'])
+        
     def atc(self):
         add_to_cart_url = "https://www.bestbuy.ca/api/basket/v2/baskets"
         data = {"lineItems":[{"sku":"","quantity":1}]}
