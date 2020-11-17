@@ -152,7 +152,7 @@ def monitor_nike(base_url, api_url):
             r = requests.get(url=url, proxies=proxy).text
             # retrive the objects from the json list
             # current_status = json.loads(r)["objects"]
-            current_status = json.loads(r)["data"]["filteredProductsWithContext"]["objects"]
+            current_status = json.loads(r)["data"]["filteredProductsWithContext"]["products"]
             print(current_status)
             #create the nike object
             nike = Nike(current_status, 'nike_ca')
