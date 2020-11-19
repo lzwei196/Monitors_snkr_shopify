@@ -223,9 +223,9 @@ class bestbuy:
         data["totalPurchasePrice"] = totalPurchasePrice
         data["id"] = id
         if self.proxyornot:
-            r = self.session.post(url, headers=headers, json=data, proxies=self.proxy)
+            r = self.session.post(url, headers=headers, json=data, proxies=self.proxy, cookies = self.session.cookies)
         else:
-            r = self.session.post(url, headers=headers,json=data)
+            r = self.session.post(url, headers=headers,json=data, cookies = self.session.cookies)
         order_detail = json.loads(r.text)
         print("#################")
         print('submit order')
