@@ -8,6 +8,7 @@ class Bestbuy(Bot):
     def login(self):
         #just to get some cookies
         self.visit_site('https://www.bestbuy.ca/en-ca')
+        self.visit_site('https://www.bestbuy.ca/en-ca/basket')
 
 
 
@@ -21,4 +22,5 @@ if __name__ == "__main__":
     for cookie in cookies:
         session.cookies.set(cookie['name'], cookie['value'])
         print(cookie['name'], cookie['value'])
+    session.get('https://www.bestbuy.ca/en-ca')
 
