@@ -20,7 +20,7 @@ url = "https://www.bestbuy.ca"
 order_url = "https://www.bestbuy.ca/api/checkout/checkout/orders"
 #bestbuy restocks at each quater
 the_time = ["14","15","59","0","29","30","44","45","55","56"]
-sku = "14926557"
+sku = "14962185"
 #14962193 14962184
 xtx = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYzVlMGMxMS02OWRkLTRkODEtODJkYy1kZjNjOTBkN2M1NDgifQ.XCXBsAi6fmEFKAhTVSR-NaQ9n4zvxfZvmVCn7cUASrk'
 ####################################################################
@@ -41,8 +41,8 @@ class bestbuy:
             try:
                 lineItems = self.atc()
             except Exception as e:
-                print(e)
-                pass
+                traceback.print_exc()
+
             if lineItems[0]["total"] != 0 :
                 try:
                     obj = self.submit_shipping(lineItems)
@@ -52,14 +52,15 @@ class bestbuy:
                     if self.submit_order(id, totalPurchasePrice) and self.oneonly:
                         break
                     else:
+                        traceback.print_exc()
                         pass
                 except Exception as e:
                    traceback.print_exc()
                    pass
+            else:
+                print('sleeping 10 before trying to add to cart again')
+                sleep(10)
 
-            # sleep = random.randint(1, 10)
-            # print(f"sleep {sleep}")
-            # time.sleep(sleep)
     def set_cookies(self):
         crawler = Bestbuy('../chromedriver.exe', headless=True)
         crawler.login()
@@ -97,7 +98,7 @@ class bestbuy:
             r = self.session.post(add_to_cart_url, data=json.dumps(data), headers=headers)
         print('############')
         print('adding' + sku + ' to cart')
-        #print(r.text)
+        print(r.text)
         lineItems = json.loads(r.text)["shipments"][0]["lineItems"][0]
         obj ={}
         lineItems_format = []
@@ -163,10 +164,16 @@ class bestbuy:
         print("#######################")
         print('submit shipping')
         print(r.text)
+        try:
+            id = json.loads(r.text)["id"]
+            totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
+        except:
+            traceback.print_exc()
+            raise
         id = json.loads(r.text)["id"]
         totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
         print('exiting at shipping as this is a test run, find this line and comment out the next line if you want real runs')
-        exit(0)
+        #exit(0)
         return [id, totalPurchasePrice]
 
     def submit_payment(self,id):
