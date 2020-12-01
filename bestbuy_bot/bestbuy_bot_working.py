@@ -24,7 +24,7 @@ sku = "14962185"
 #14962193 14962184
 xtx = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYzVlMGMxMS02OWRkLTRkODEtODJkYy1kZjNjOTBkN2M1NDgifQ.XCXBsAi6fmEFKAhTVSR-NaQ9n4zvxfZvmVCn7cUASrk'
 ####################################################################
-
+purchased=False
 
 
 
@@ -35,8 +35,6 @@ class bestbuy:
         self.session = HTMLSession()
         self.proxyornot = proxyornot
         lineItems = {}
-        self.set_cookies()
-        print('cookies set')
         while True:
             try:
                 lineItems = self.atc()
@@ -44,13 +42,17 @@ class bestbuy:
                 traceback.print_exc()
 
             if lineItems[0]["total"] != 0 :
+                self.set_cookies()
+                print('set cookies')
                 try:
                     obj = self.submit_shipping(lineItems)
                     id = obj[0]
                     totalPurchasePrice = obj[1]
                     self.submit_payment(id)
                     if self.submit_order(id, totalPurchasePrice) and self.oneonly:
-                        break
+                        global purchased
+                        purchased = True
+                        return
                     else:
                         traceback.print_exc()
                         pass
@@ -245,7 +247,11 @@ while True:
     try:
         #When creating the bestbuy obj, its default to use proxy and only checkout once, u can pass in different params.
         bestbuy = bestbuy(the_proxy)
-        break
+        print('exiting cuz bestbuy finished running without exceptions')
+        exit(0)
     except Exception as e:
+        if purchased:
+            print('exiting cuz purchased was flagged true')
+            exit(0)
         print(e)
 
