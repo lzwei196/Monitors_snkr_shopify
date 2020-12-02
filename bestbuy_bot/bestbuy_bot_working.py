@@ -36,7 +36,10 @@ class bestbuy:
         self.proxy = proxy
         self.session = HTMLSession()
         self.proxyornot = proxyornot
+        self.timeout=10
         lineItems = {}
+        self.set_cookies()
+        print('set cookies')
         while True:
             try:
                 lineItems = self.atc()
@@ -44,8 +47,6 @@ class bestbuy:
                 traceback.print_exc()
 
             if lineItems[0]["total"] != 0 :
-                self.set_cookies()
-                print('set cookies')
                 try:
                     obj = self.submit_shipping(lineItems)
                     id = obj[0]
@@ -58,6 +59,12 @@ class bestbuy:
                     else:
                         traceback.print_exc()
                         pass
+                except requests.exceptions.ConnectTimeout:
+                    print('connect timeout, resetting cookies')
+                    self.set_cookies()
+                except requests.exceptions.ReadTimeout:
+                    print('read timeout, resetting cookies')
+                    self.set_cookies()
                 except Exception as e:
                    traceback.print_exc()
                    pass
@@ -164,11 +171,12 @@ class bestbuy:
             "x-tx":xtx
         }
 
+        timeout=self.timeout
 
         if self.proxyornot:
-            r = self.session.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies)
+            r = self.session.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies, timeout=timeout)
         else:
-            r = self.session.post(order_url,headers=shipping_headers,json=data, cookies=self.session.cookies)
+            r = self.session.post(order_url,headers=shipping_headers,json=data, cookies=self.session.cookies, timeout=timeout)
         print("#######################")
         print('submit shipping')
         print(r.text)
@@ -262,4 +270,3 @@ while True:
             print('exiting cuz purchased was flagged true')
             exit(0)
         print(e)
-
