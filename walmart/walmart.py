@@ -1,7 +1,8 @@
-import requests
+from requests_html import HTMLSession
 import json
 import datetime
 import time
+from selenium_wrapper.selenium_support import *
 #link for test
 #currently every single call that have been made during the checkout process are established
 #stucked at submit payment
@@ -22,10 +23,17 @@ header = {
 
 class Walmart:
     def __init__(self):
-        self.session = requests.Session()
+        self.session = HTMLSession()
         self.session.get(product_link)
         #self.atc()
         self.shipping()
+
+    def set_cookies(self):
+        crawler = Walmart('../chromedriver.exe', headless=True)
+        crawler.login()
+        cookies = crawler.browser.get_cookies()
+        for cookie in cookies:
+            self.session.cookies.set(cookie['name'], cookie['value'])
 
 
     def atc(self):

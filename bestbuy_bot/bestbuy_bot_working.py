@@ -4,7 +4,7 @@ import datetime
 import time
 from shopifyMonitor import load_proxy, parse_proxy
 import random
-from bestbuy_bot.selenium_support import *
+from selenium_wrapper.selenium_support import *
 from requests_html import HTMLSession
 import traceback
 import bestbuy_bot.args as args
