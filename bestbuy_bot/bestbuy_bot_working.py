@@ -48,7 +48,16 @@ class bestbuy:
 
             if lineItems[0]["total"] != 0 :
                 try:
-                    obj = self.submit_shipping(lineItems)
+                    try:
+                        obj = self.submit_shipping(lineItems)
+                    except requests.exceptions.ConnectTimeout:
+                        print('connect timeout, resetting cookies')
+                        self.set_cookies()
+                        obj = self.submit_shipping(lineItems)
+                    except requests.exceptions.ReadTimeout:
+                        print('read timeout, resetting cookies')
+                        self.set_cookies()
+                        obj = self.submit_shipping(lineItems)
                     id = obj[0]
                     totalPurchasePrice = obj[1]
                     self.submit_payment(id)
@@ -59,12 +68,6 @@ class bestbuy:
                     else:
                         traceback.print_exc()
                         pass
-                except requests.exceptions.ConnectTimeout:
-                    print('connect timeout, resetting cookies')
-                    self.set_cookies()
-                except requests.exceptions.ReadTimeout:
-                    print('read timeout, resetting cookies')
-                    self.set_cookies()
                 except Exception as e:
                    traceback.print_exc()
                    pass
