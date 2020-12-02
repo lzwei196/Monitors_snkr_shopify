@@ -2,7 +2,7 @@ from requests_html import HTMLSession
 import json
 import datetime
 import time
-from selenium_wrapper.selenium_support import *
+import selenium_wrapper.selenium_support as ss
 from util.decorators import *
 #link for test
 #currently every single call that have been made during the checkout process are established
@@ -27,13 +27,14 @@ class Walmart:
     def __init__(self):
         self.session = HTMLSession()
         self.set_cookies()
+        exit(0)
         self.session.get(product_link)
         #self.atc()
         self.shipping()
 
     @debug
     def set_cookies(self):
-        crawler = Walmart('../chromedriver.exe', headless=True)
+        crawler = ss.Walmart('../chromedriver.exe', headless=True)
         crawler.login()
         cookies = crawler.browser.get_cookies()
         for cookie in cookies:
