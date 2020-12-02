@@ -62,17 +62,21 @@ class Walmart:
         link = 'https://www.walmart.ca/api/checkout-page/checkout/email?availStore=3165&postalCode=H3A2N4'
         shipping_link = 'https://www.walmart.ca/api/checkout-page/checkout/address?lang=en&availStore=3165&slotBooked=false'
         postal_link = 'https://www.walmart.ca/api/checkout-page/edd?postalCode=H3G0E1'
-        summary_link ='https://www.walmart.ca/api/checkout-page/payments/summaryhttps://www.walmart.ca/api/checkout-page/payments/summary'
+        summary_link ='https://www.walmart.ca/api/checkout-page/payments/summary'
         ###########################################################
         email_data = '{"emailAddress":"lzwei196@163.com"}'
         shipping_data = '{"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":true,"country":"CA","locationId":null,"overrideAddressVerification":false}}'
         postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
         #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
         summary_data = '{"orderTotal":29.79,"paymentMethods":[{"piHash":{"pan":"4520028185626631","cvv":"217","encryption":{"integrityCheck":"fcf90fff8e7d0c5e","phase":"1","keyId":"b73eb61c"}},"cardType":"CREDIT_CARD","pmId":"VISA","cardLast4Digits":"6631","referenceId":"pkeurr"}]}'
-        r_email= self.session.post(link, headers=header, json=email_data)
-        r_shipping = self.session.post(shipping_link, headers=header, json=shipping_data)
+        r_email= self.session.post(link, headers=header, data=email_data)
+        print(r_email, r_email.text)
+        r_shipping = self.session.post(shipping_link, headers=header, data=shipping_data)
+        print(r_shipping,r_shipping.text)
        # r_postal = self.session.post(postal_link, headers=header, json=postal_data)
-        r_summary = self.session.post(summary_link, headers=header, json=summary_data)
-        #print(r_summary.text)
+        r_summary = self.session.post(summary_link, data=summary_data)
+        print(r_summary, r_summary.text)
+
+
 
 walmart = Walmart()
