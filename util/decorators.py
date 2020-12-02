@@ -19,7 +19,17 @@ def timer(f):
 def debug(f):
     def timed(*args, **kw):
         print('entering',f.__name__ )
-        result = f(*args, **kw)
+        try:
+            result = f(*args, **kw)
+        except:
+            print(f.__name__, "failed with args: ", *args, kw)
+            raise
         print('exiting', f.__name__)
         return result
     return timed
+
+# @debug
+# def test(a, b, c, keyarg=0):
+#     a = {}
+#     b = a['test']
+
