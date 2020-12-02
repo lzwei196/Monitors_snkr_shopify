@@ -11,6 +11,7 @@ import logging
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
+from util.decorators import *
 
 # import this variable when using the class Snkr
 Verification = namedtuple('Verification', 'type text')
@@ -18,7 +19,7 @@ INTERNAL_LOGGING = None
 VERBOSE = True
 AUTO_QUIT = True
 
-
+@debug
 def prints(*args):
     # overloading default print for this file so that you can turn off all prints with VERBOSE
     # use this prints instead of print() for this file
@@ -29,6 +30,7 @@ def prints(*args):
         INTERNAL_LOGGING.debug(*args)
 
 class Bot:
+
     def __init__(self, driver_path, headless=False):
         # set the brower object and find function types
         options = Options()

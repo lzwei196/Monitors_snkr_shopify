@@ -3,6 +3,7 @@ import json
 import datetime
 import time
 from selenium_wrapper.selenium_support import *
+from util.decorators import *
 #link for test
 #currently every single call that have been made during the checkout process are established
 #stucked at submit payment
@@ -22,12 +23,15 @@ header = {
 
 
 class Walmart:
+    @debug
     def __init__(self):
         self.session = HTMLSession()
+        self.set_cookies()
         self.session.get(product_link)
         #self.atc()
         self.shipping()
 
+    @debug
     def set_cookies(self):
         crawler = Walmart('../chromedriver.exe', headless=True)
         crawler.login()
@@ -35,7 +39,7 @@ class Walmart:
         for cookie in cookies:
             self.session.cookies.set(cookie['name'], cookie['value'])
 
-
+    @debug
     def atc(self):
 
         link = 'https://www.walmart.ca/api/product-page/v2/cart?responseGroup=essential&storeId=1061&lang=en'
@@ -52,6 +56,7 @@ class Walmart:
         r = self.session.post(link, headers=header, json=data)
         print(r.text)
 
+    @debug
     def shipping(self):
         header = {
             'origin': 'https://www.walmart.ca',

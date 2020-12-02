@@ -8,6 +8,7 @@ from selenium_wrapper.selenium_support import *
 from requests_html import HTMLSession
 import traceback
 import bestbuy_bot.args as args
+from util.decorators import *
 ########################### General param ##########################
 ####REPLACE the address, credit card info in the submit shipping, payment and order section
 #the cookie will be expired in an hour, haven't tested much, but this seems to be the case
@@ -29,6 +30,7 @@ purchased=False
 
 
 class bestbuy:
+    @debug
     def __init__(self,proxy, proxyornot=False, oneonly = True):
         self.oneonly = oneonly
         self.proxy = proxy
@@ -63,6 +65,7 @@ class bestbuy:
                 print('sleeping 10 before trying to add to cart again')
                 sleep(10)
 
+    @debug
     def set_cookies(self):
         crawler = Bestbuy('../chromedriver.exe', headless=True)
         crawler.login()
@@ -77,6 +80,7 @@ class bestbuy:
         response = self.session.get('https://www.bestbuy.ca/en-ca')
         print(response)
 
+    @debug
     def atc(self):
         add_to_cart_url = "https://www.bestbuy.ca/api/basket/v2/baskets"
         data = {"lineItems":[{"sku":"","quantity":1}]}
@@ -115,6 +119,7 @@ class bestbuy:
         #print(lineItems_format[0]["total"])
         return  lineItems_format
 
+    @debug
     def start_checkout(self):
         headers = {
             "accept": "*/*",
@@ -131,6 +136,7 @@ class bestbuy:
         print(r.text)
         print(self.session.cookies.get_dict())
 
+    @debug
     def submit_shipping(self,lineItems):
         data = {"email":args.email,"shippingAddress":{"address":args.address,"apartmentNumber":args.apartmentNumber
             ,"city":args.city,"country":args.country,"firstName":args.firstName,"lastName":args.lastName,"phones":[{"ext":args.ext,"phone":args.phone}]
@@ -178,6 +184,7 @@ class bestbuy:
         #exit(0)
         return [id, totalPurchasePrice]
 
+    @debug
     def submit_payment(self,id):
         print('############')
         print('submiting payment')
@@ -209,6 +216,7 @@ class bestbuy:
             r = self.session.put(url,headers=headers,json=data, cookies = self.session.cookies)
         print(r.text)
 
+    @debug
     def submit_order(self,id,totalPurchasePrice):
         url = "https://www.bestbuy.ca/api/checkout/checkout/orders/submit"
         headers = {

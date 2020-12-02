@@ -1,0 +1,25 @@
+import time
+from flask import Flask, jsonify, request
+import traceback
+
+def timer(f):
+    def timed(*args, **kw):
+
+        ts = time.time()
+        result = f(*args, **kw)
+        te = time.time()
+
+        # print ('func:%r args:[%r, %r] took: %2.4f sec' % \
+        #   (f.__name__, args, kw, te-ts))
+        print ('func:%r took: %2.4f sec' % \
+          (f.__name__, te-ts))
+        return result
+    return timed
+
+def debug(f):
+    def timed(*args, **kw):
+        print('entering',f.__name__ )
+        result = f(*args, **kw)
+        print('exiting', f.__name__)
+        return result
+    return timed
