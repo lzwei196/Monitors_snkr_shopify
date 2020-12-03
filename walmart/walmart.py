@@ -37,11 +37,14 @@ class Walmart:
 
     @debug
     def set_cookies(self):
-        crawler = ss.Walmart('../chromedriver.exe', headless=True)
-        crawler.login()
-        cookies = crawler.browser.get_cookies()
+        self.crawler = ss.Walmart('../chromedriver.exe', headless=True)
+        self.crawler.login()
+        self.crawler.visit_site('https://www.walmart.ca/checkout')
+        time.sleep(10)
+        cookies = self.crawler.browser.get_cookies()
         for cookie in cookies:
             self.session.cookies.set(cookie['name'], cookie['value'])
+
 
     @debug
     def atc(self):
@@ -60,6 +63,7 @@ class Walmart:
 
     @debug
     def shipping(self):
+        #self.pre_shipping()
         #initate checkout
         r_start = self.session.get('https://www.walmart.ca/api/checkout-page/checkout?lang=en&availStoreId=3165&postalCode=H3G0E1', headers=header)
         #links
@@ -70,10 +74,10 @@ class Walmart:
         ###########################################################
         email_data = {"emailAddress":email}
         r_email = self.session.post(email_link, headers=header, json=email_data)
-        print(r_email, r_email.text)
+        print('email', r_email, r_email.text)
         shipping_data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":first,"lastName":last,"addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":None,"overrideAddressVerification":'false'}}
-        r_shipping = self.session.post(shipping_link, headers=header, json=shipping_data)
-        print(r_shipping, r_shipping.text)
+        r_shipping = self.session.post(shipping_link,  json=shipping_data)
+        print('shipping',r_shipping, r_shipping.text)
         price = r_email.json()['orderPriceInfo']["total"]
         #postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
         #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}

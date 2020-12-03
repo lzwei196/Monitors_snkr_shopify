@@ -18,12 +18,12 @@ def timer(f):
 
 def debug(f):
     def timed(*args, **kw):
-        print('entering',f.__name__ )
+        print('\nentering',f.__name__ )
         try:
             result = f(*args, **kw)
         except:
             print(f.__name__, "failed with args: ", *args, kw)
-            # traceback.print_exc()
+            #traceback.print_exc()
             raise
         print('exiting', f.__name__)
         return result

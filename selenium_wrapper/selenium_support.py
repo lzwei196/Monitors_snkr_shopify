@@ -33,7 +33,7 @@ class Walmart(Bot):
 
     def login(self, urls=None):
         if urls is None:
-            urls=['https://www.walmart.ca/en']
+            urls=['https://www.walmart.ca']
         #just to get some cookies
         for site in urls:
             self.visit_site(site)
