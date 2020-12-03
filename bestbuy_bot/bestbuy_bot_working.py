@@ -31,7 +31,7 @@ purchased=False
 
 class bestbuy:
     @debug
-    def __init__(self,proxy, proxyornot=False, oneonly = True):
+    def __init__(self,proxy=None, proxyornot=False, oneonly = True):
         self.oneonly = oneonly
         self.proxy = proxy
         self.session = HTMLSession()
@@ -39,6 +39,7 @@ class bestbuy:
         self.timeout=10
         lineItems = {}
         self.set_cookies()
+        return
         print('set cookies')
         while True:
             try:
@@ -87,8 +88,8 @@ class bestbuy:
         for name, val in self.session.cookies.items():
             print(name, val)
         print('ok')
-        response = self.session.get('https://www.bestbuy.ca/en-ca')
-        print(response)
+        response = self.session.get('https://www.bestbuy.ca/checkout/?qit=1')
+        print(response, response.text)
 
     @debug
     def atc(self):
