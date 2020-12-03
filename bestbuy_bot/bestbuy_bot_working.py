@@ -260,17 +260,17 @@ class bestbuy:
         else:
             print('order failed, retrying')
             return False
-
-proxies = load_proxy('proxy.text')
-while True:
-    the_proxy = parse_proxy(random.choice(proxies))
-    try:
-        #When creating the bestbuy obj, its default to use proxy and only checkout once, u can pass in different params.
-        bestbuy = bestbuy(the_proxy)
-        print('exiting cuz bestbuy finished running without exceptions')
-        exit(0)
-    except Exception as e:
-        if purchased:
-            print('exiting cuz purchased was flagged true')
+if __name__ == '__main__':
+    proxies = load_proxy('proxy.text')
+    while True:
+        the_proxy = parse_proxy(random.choice(proxies))
+        try:
+            #When creating the bestbuy obj, its default to use proxy and only checkout once, u can pass in different params.
+            bestbuy = bestbuy(the_proxy)
+            print('exiting cuz bestbuy finished running without exceptions')
             exit(0)
-        print(e)
+        except Exception as e:
+            if purchased:
+                print('exiting cuz purchased was flagged true')
+                exit(0)
+            print(e)

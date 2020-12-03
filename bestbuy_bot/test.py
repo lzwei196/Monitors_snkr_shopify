@@ -38,6 +38,8 @@ for cookie in cookies:
     #print(cookie['name'], cookie['value'])
     if cookie['name'] in cookies1:
         del cookies1[cookie['name']]
+
+print('leftover cookies')
 pprint(cookies1)
 
 
