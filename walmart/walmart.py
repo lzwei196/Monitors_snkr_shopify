@@ -8,6 +8,9 @@ from util.decorators import *
 #currently every single call that have been made during the checkout process are established
 #stucked at submit payment
 #cookie is mandetory, and cookie includes the bucket info. the bucket id wouldnt change under the same cookie.
+email = 'lzwei196@163.com'
+first ='ziwei'
+last = 'li'
 
 product_link = 'https://www.walmart.ca/en/ip/paw-patrol-dino-rescue-chases-deluxe-rev-up-vehicle/6000201418461'
 header = {
@@ -50,7 +53,7 @@ class Walmart:
             'accept':'application/json',
             #'wm_qos.correlation_id':'4a005237-026-175a54ed043916,4a005237-026-175a54ed043fdb,4a005237-026-175a54ed043fdb'
         }
-        data = {"postalCode":"H3S2B2","items":[{"offerId":"6000201418464","skuId":"6000201418464","quantity":1,"allowSubstitutions":True,"subscription":False,"action":"ADD","availabilityStoreId":"3165","pricingStoreId":"1170"}],"pricingStoreId":"1170"}
+        data = {"postalCode":"H3S2B2","items":[{"offerId":"6000201418464", "skuId":"6000201418464","quantity":1,"allowSubstitutions":True,"subscription":False,"action":"ADD","availabilityStoreId":"3165","pricingStoreId":"1170"}],"pricingStoreId":"1170"}
         r = self.session.post(link, headers=header, json=data)
         print(r.text)
 
@@ -59,24 +62,25 @@ class Walmart:
         #initate checkout
         r_start = self.session.get('https://www.walmart.ca/api/checkout-page/checkout?lang=en&availStoreId=3165&postalCode=H3G0E1', headers=header)
         #links
-        link = 'https://www.walmart.ca/api/checkout-page/checkout/email?availStore=3165&postalCode=H3A2N4'
+        email_link = 'https://www.walmart.ca/api/checkout-page/checkout/email?availStore=3165&postalCode=H3G0E1'
         shipping_link = 'https://www.walmart.ca/api/checkout-page/checkout/address?lang=en&availStore=3165&slotBooked=false'
-        postal_link = 'https://www.walmart.ca/api/checkout-page/edd?postalCode=H3G0E1'
         summary_link ='https://www.walmart.ca/api/checkout-page/payments/summary'
+        place_order = 'https://www.walmart.ca/api/checkout-page/checkout/place-order?lang=en&availStoreId=1061&postalCode=H3G0E1'
         ###########################################################
-        email_data = '{"emailAddress":"lzwei196@163.com"}'
-        shipping_data = '{"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":true,"country":"CA","locationId":null,"overrideAddressVerification":false}}'
-        postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
-        #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
-        summary_data = '{"orderTotal":29.79,"paymentMethods":[{"piHash":{"pan":"4520028185626631","cvv":"217","encryption":{"integrityCheck":"fcf90fff8e7d0c5e","phase":"1","keyId":"b73eb61c"}},"cardType":"CREDIT_CARD","pmId":"VISA","cardLast4Digits":"6631","referenceId":"pkeurr"}]}'
-        r_email= self.session.post(link, headers=header, data=email_data)
+        email_data = {"emailAddress":email}
+        r_email = self.session.post(email_link, headers=header, json=email_data)
         print(r_email, r_email.text)
-        r_shipping = self.session.post(shipping_link, headers=header, data=shipping_data)
-        print(r_shipping,r_shipping.text)
-       # r_postal = self.session.post(postal_link, headers=header, json=postal_data)
-        r_summary = self.session.post(summary_link, data=summary_data)
+        shipping_data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":first,"lastName":last,"addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
+        r_shipping = self.session.post(shipping_link, headers=header, json=shipping_data)
+        print(r_shipping, r_shipping.text)
+        price = r_shipping['orderPriceInfo']["total"]
+        #postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
+        #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
+        summary_data = {"orderTotal":price,"paymentMethods":[{"piHash":{"pan":"4520028185626631","cvv":"217","encryption":{"integrityCheck":"fcf90fff8e7d0c5e","phase":"1","keyId":"b73eb61c"}},"cardType":"CREDIT_CARD","pmId":"VISA","cardLast4Digits":"6631","referenceId":"pkeurr"}]}
+        r_summary = self.session.post(summary_link, json=summary_data)
         print(r_summary, r_summary.text)
-
-
+        place_order_data = {"cvv":[{"credentialEncrypted":True,"paymentId":"f1e31d7c-9e93-4e8b-af46-69df45a508bf","voltageCredential":{"cypherTextCvv":"125","cypherTextPan":"4724094024082919","integrityCheck":"8abb4194ad94f7ea","keyId":"a2cd8300","phase":1}}],"ogInfo":{"ogSessionId":"af0a84f8847311e3b233bc764e1107f2.146933.1606956588","ogAutoship":False}}
+        r_place = self.session.post(place_order, json=place_order_data)
+        print(r_place, r_place.text)
 
 walmart = Walmart()
