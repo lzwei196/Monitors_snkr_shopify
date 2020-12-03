@@ -23,7 +23,7 @@ def debug(f):
             result = f(*args, **kw)
         except:
             print(f.__name__, "failed with args: ", *args, kw)
-            traceback.print_exc()
+            # traceback.print_exc()
             raise
         print('exiting', f.__name__)
         return result

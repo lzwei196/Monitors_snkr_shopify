@@ -2,6 +2,7 @@ from requests_html import HTMLSession
 import json
 import datetime
 import time
+from pprint import  pprint
 import selenium_wrapper.selenium_support as ss
 from util.decorators import *
 #link for test
@@ -70,10 +71,10 @@ class Walmart:
         email_data = {"emailAddress":email}
         r_email = self.session.post(email_link, headers=header, json=email_data)
         print(r_email, r_email.text)
-        shipping_data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":first,"lastName":last,"addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
+        shipping_data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":first,"lastName":last,"addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":None,"overrideAddressVerification":'false'}}
         r_shipping = self.session.post(shipping_link, headers=header, json=shipping_data)
         print(r_shipping, r_shipping.text)
-        price = r_shipping['orderPriceInfo']["total"]
+        price = r_email.json()['orderPriceInfo']["total"]
         #postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
         #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
         summary_data = {"orderTotal":price,"paymentMethods":[{"piHash":{"pan":"4520028185626631","cvv":"217","encryption":{"integrityCheck":"fcf90fff8e7d0c5e","phase":"1","keyId":"b73eb61c"}},"cardType":"CREDIT_CARD","pmId":"VISA","cardLast4Digits":"6631","referenceId":"pkeurr"}]}
