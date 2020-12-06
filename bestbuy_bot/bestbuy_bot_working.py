@@ -37,41 +37,24 @@ class bestbuy:
         self.session = HTMLSession()
         self.proxyornot = proxyornot
         self.timeout=10
-        lineItems = {}
         self.set_cookies()
-        return
-        print('set cookies')
-        while True:
-            try:
-                lineItems = self.atc()
-            except Exception as e:
-                traceback.print_exc()
 
+    def start_bot(self):
+        lineItems = {}
+        while True:
+            lineItems = self.atc()
             if lineItems[0]["total"] != 0 :
-                try:
-                    try:
-                        obj = self.submit_shipping(lineItems)
-                    except requests.exceptions.ConnectTimeout:
-                        print('connect timeout, resetting cookies')
-                        self.set_cookies()
-                        obj = self.submit_shipping(lineItems)
-                    except requests.exceptions.ReadTimeout:
-                        print('read timeout, resetting cookies')
-                        self.set_cookies()
-                        obj = self.submit_shipping(lineItems)
-                    id = obj[0]
-                    totalPurchasePrice = obj[1]
-                    self.submit_payment(id)
-                    if self.submit_order(id, totalPurchasePrice) and self.oneonly:
-                        global purchased
-                        purchased = True
-                        return
-                    else:
-                        traceback.print_exc()
-                        pass
-                except Exception as e:
-                   traceback.print_exc()
-                   pass
+                obj = self.submit_shipping(lineItems)
+                id = obj[0]
+                totalPurchasePrice = obj[1]
+                self.submit_payment(id)
+                if self.submit_order(id, totalPurchasePrice) and self.oneonly:
+                    global purchased
+                    purchased = True
+                    return
+                else:
+                    traceback.print_exc()
+                    pass
             else:
                 print('sleeping 10 before trying to add to cart again')
                 sleep(10)
@@ -92,6 +75,7 @@ class bestbuy:
         print(response, response.text)
 
     @debug
+    @exception_handler
     def atc(self):
         add_to_cart_url = "https://www.bestbuy.ca/api/basket/v2/baskets"
         data = {"lineItems":[{"sku":"","quantity":1}]}
@@ -148,18 +132,19 @@ class bestbuy:
         print(self.session.cookies.get_dict())
 
     @debug
+    @exception_handler
     def submit_shipping(self,lineItems):
         data = {"email":args.email,"shippingAddress":{"address":args.address,"apartmentNumber":args.apartmentNumber
             ,"city":args.city,"country":args.country,"firstName":args.firstName,"lastName":args.lastName,"phones":[{"ext":args.ext,"phone":args.phone}]
             ,"postalCode":args.postalCode,"province":args.province}}
         data["lineItems"] = lineItems
-        print(data)
 
-        cookies_str=[]
-        base="%s=%s"
-        for name, cookie in self.session.cookies.items():
-            cookies_str.append(base % (name, cookie))
-        cookies_str = '; '.join(cookies_str)
+
+        # cookies_str=[]
+        # base="%s=%s"
+        # for name, cookie in self.session.cookies.items():
+        #     cookies_str.append(base % (name, cookie))
+        # cookies_str = '; '.join(cookies_str)
 
         shipping_headers = {
             "accept": "application/vnd.bestbuy.checkout+json",
@@ -171,12 +156,11 @@ class bestbuy:
             "Host": "www.bestbuy.ca",
              "referer": "https://www.bestbuy.ca/checkout/",
             "x-dtreferer": "https://www.bestbuy.ca/checkout/#/en-ca/shipping/QC/H3G0E1",
-            'cookie':cookies_str,
+            #'cookie':cookies_str,
             "x-tx":xtx
         }
 
         timeout=self.timeout
-
         if self.proxyornot:
             r = self.session.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies, timeout=timeout)
         else:
@@ -184,22 +168,16 @@ class bestbuy:
         print("#######################")
         print('submit shipping')
         print(r.text)
-        try:
-            id = json.loads(r.text)["id"]
-            totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
-        except:
-            traceback.print_exc()
-            raise
         id = json.loads(r.text)["id"]
         totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
         print('exiting at shipping as this is a test run, find this line and comment out the next line if you want real runs')
         #exit(0)
         return [id, totalPurchasePrice]
 
+
     @debug
+    @exception_handler
     def submit_payment(self,id):
-        print('############')
-        print('submiting payment')
         url = "https://www.bestbuy.ca/api/checkout/checkout/orders/"+id+"/payments"
         data = {"email":args.email,
                 "payment":{"creditCard":{"billingAddress":{"address":args.address,"apartmentNumber":args.apartmentNumber
@@ -222,13 +200,15 @@ class bestbuy:
             #'cookie': cookie,
             "x-tx": xtx
         }
+        timeout = self.timeout
         if self.proxyornot:
-            r = self.session.put(url,headers=headers,json=data, proxies = self.proxy, cookies=self.session.cookies)
+            r = self.session.put(url,headers=headers,json=data, proxies = self.proxy, cookies=self.session.cookies, timeout=timeout)
         else:
-            r = self.session.put(url,headers=headers,json=data, cookies = self.session.cookies)
+            r = self.session.put(url,headers=headers,json=data, cookies = self.session.cookies, timeout=timeout)
         print(r.text)
 
     @debug
+    @exception_handler
     def submit_order(self,id,totalPurchasePrice):
         url = "https://www.bestbuy.ca/api/checkout/checkout/orders/submit"
         headers = {
@@ -246,10 +226,11 @@ class bestbuy:
         data = {"cvv":args.cvv,"email":args.email,"secureAuthenticationResponse":secure_res}
         data["totalPurchasePrice"] = totalPurchasePrice
         data["id"] = id
+        timeout=self.timeout
         if self.proxyornot:
-            r = self.session.post(url, headers=headers, json=data, proxies=self.proxy, cookies = self.session.cookies)
+            r = self.session.post(url, headers=headers, json=data, proxies=self.proxy, cookies = self.session.cookies, timeout=timeout)
         else:
-            r = self.session.post(url, headers=headers,json=data, cookies = self.session.cookies)
+            r = self.session.post(url, headers=headers,json=data, cookies = self.session.cookies, timeout=timeout)
         order_detail = json.loads(r.text)
         print("#################")
         print('submit order')
@@ -267,6 +248,7 @@ if __name__ == '__main__':
         try:
             #When creating the bestbuy obj, its default to use proxy and only checkout once, u can pass in different params.
             bestbuy = bestbuy(the_proxy)
+            bestbuy.start_bot()
             print('exiting cuz bestbuy finished running without exceptions')
             exit(0)
         except Exception as e:

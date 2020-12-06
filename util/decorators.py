@@ -1,6 +1,6 @@
 import time
-from flask import Flask, jsonify, request
 import traceback
+import requests
 
 def timer(f):
     def timed(*args, **kw):
@@ -28,6 +28,32 @@ def debug(f):
         print('exiting', f.__name__)
         return result
     return timed
+
+def exception_handler(f):
+    def handler(*args, **kw):
+        self = args[0]
+        try:
+            result = f(*args, **kw)
+        except requests.exceptions.ConnectTimeout:
+            print('connect timeout, resetting cookies')
+            self.set_cookies()
+            print('retrying ', f.__name__)
+            return handler(*args, **kw)
+        except requests.exceptions.ReadTimeout:
+            print('read timeout, resetting cookies')
+            self.set_cookies()
+            print('retrying ', f.__name__)
+            return handler(*args, **kw)
+        except KeyError:
+            print('likely response had no key "id" in json, but might be caused by something else')
+            traceback.print_exc()
+            print('retrying ', f.__name__)
+            return handler(*args, **kw)
+        except:
+            traceback.print_exc()
+            raise
+        return result
+    return handler
 
 # @debug
 # def test(a, b, c, keyarg=0):

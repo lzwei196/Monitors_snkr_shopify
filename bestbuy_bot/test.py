@@ -32,6 +32,7 @@ cookies1 = cookie_format(sample2)
 from bestbuy_bot.bestbuy_bot_working import bestbuy
 
 bestbuy = bestbuy()
+exit(0)
 cookies = bestbuy.session.cookies
 
 
@@ -39,6 +40,7 @@ cookies = bestbuy.session.cookies
 for name, val in cookies.items():
     #print(cookie['name'], cookie['value'])
     if name in cookies1:
+        print('deleted a cookie')
         del cookies1[name]
 
 print('leftover cookies')
