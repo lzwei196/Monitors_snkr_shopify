@@ -23,9 +23,11 @@ order_url = "https://www.bestbuy.ca/api/checkout/checkout/orders"
 the_time = ["14","15","59","0","29","30","44","45","55","56"]
 sku = "14962185"
 #14962193 14962184
-xtx = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYzVlMGMxMS02OWRkLTRkODEtODJkYy1kZjNjOTBkN2M1NDgifQ.XCXBsAi6fmEFKAhTVSR-NaQ9n4zvxfZvmVCn7cUASrk'
+xtx = args.xtx
 ####################################################################
 purchased=False
+
+
 
 
 
@@ -80,19 +82,7 @@ class bestbuy:
         add_to_cart_url = "https://www.bestbuy.ca/api/basket/v2/baskets"
         data = {"lineItems":[{"sku":"","quantity":1}]}
         data["lineItems"][0]["sku"] = sku
-        headers = {
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "en-CA",
-            "Content-Length":"47",
-            "content-type": "application/json",
-            "origin": "https://www.bestbuy.ca",
-            "postal-code": args.postalCode,
-            "region-code": args.province,
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
-            "Host": "www.bestbuy.ca",
-           #"x-tx": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJmNDZjZjE1Ny04N2Q4LTQwZDMtOGQzNy0yYzA3ZjdhMDM3OGUifQ.0oSnniqudGcnuJa67TB2qI6wyid-erEO6BqRCd0YZfo"
-        }
+        headers = args.atc_headers
         if self.proxyornot:
             r = self.session.post(add_to_cart_url, data=json.dumps(data), headers=headers, proxies=self.proxy)
         else:
@@ -116,17 +106,7 @@ class bestbuy:
 
     @debug
     def start_checkout(self):
-        headers = {
-            "accept": "*/*",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "en-CA",
-            "Content-Length": "47",
-            "content-type": "application/json",
-            "origin": "https://www.bestbuy.ca",
-            "postal-code": args.postalCode,
-            "region-code": args.province,
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
-            "Host": "www.bestbuy.ca"}
+        headers = args.atc_headers
         r = self.session.get("https://www.bestbuy.ca/checkout/?qit=1#/en-ca/shipping/", headers=headers)
         print(r.text)
         print(self.session.cookies.get_dict())
@@ -139,13 +119,6 @@ class bestbuy:
             ,"postalCode":args.postalCode,"province":args.province}}
         data["lineItems"] = lineItems
 
-
-        # cookies_str=[]
-        # base="%s=%s"
-        # for name, cookie in self.session.cookies.items():
-        #     cookies_str.append(base % (name, cookie))
-        # cookies_str = '; '.join(cookies_str)
-
         shipping_headers = {
             "accept": "application/vnd.bestbuy.checkout+json",
             "accept-encoding": "gzip, deflate, br",
@@ -156,7 +129,6 @@ class bestbuy:
             "Host": "www.bestbuy.ca",
              "referer": "https://www.bestbuy.ca/checkout/",
             "x-dtreferer": "https://www.bestbuy.ca/checkout/#/en-ca/shipping/QC/H3G0E1",
-            #'cookie':cookies_str,
             "x-tx":xtx
         }
 
@@ -174,7 +146,6 @@ class bestbuy:
         #exit(0)
         return [id, totalPurchasePrice]
 
-
     @debug
     @exception_handler
     def submit_payment(self,id):
@@ -187,19 +158,7 @@ class bestbuy:
                                          "cardNumber":args.cardNumber,
                                          "cardType":args.cardType,"cvv":args.cvv,"expirationMonth":args.expirationMonth,"expirationYear":args.expirationYear}}}
 
-        headers = {
-            "accept": "application/vnd.bestbuy.checkout+json",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "en-CA",
-            "content-type": "application/json",
-            "content-length": "493",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
-            "Host": "www.bestbuy.ca",
-            "referer": "https://www.bestbuy.ca/checkout/",
-            "x-dtreferer": "https://www.bestbuy.ca/checkout/#/en-ca/shipping/QC/H3G0E1",
-            #'cookie': cookie,
-            "x-tx": xtx
-        }
+        headers=args.order_headers
         timeout = self.timeout
         if self.proxyornot:
             r = self.session.put(url,headers=headers,json=data, proxies = self.proxy, cookies=self.session.cookies, timeout=timeout)
@@ -211,18 +170,7 @@ class bestbuy:
     @exception_handler
     def submit_order(self,id,totalPurchasePrice):
         url = "https://www.bestbuy.ca/api/checkout/checkout/orders/submit"
-        headers = {
-            "accept": "application/vnd.bestbuy.checkout+json",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "en-CA",
-            "content-type": "application/json",
-            "content-length": "493",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
-            "Host": "www.bestbuy.ca",
-            "referer": "https://www.bestbuy.ca/checkout/",
-            "x-dtreferer": "https://www.bestbuy.ca/checkout/#/en-ca/shipping/QC/H3G0E1",
-            "x-tx": xtx
-        }
+        headers=args.order_headers
         data = {"cvv":args.cvv,"email":args.email,"secureAuthenticationResponse":secure_res}
         data["totalPurchasePrice"] = totalPurchasePrice
         data["id"] = id

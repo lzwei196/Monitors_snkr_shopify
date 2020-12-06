@@ -15,3 +15,29 @@ cardType="VISA"
 cvv="453"
 expirationMonth="2"
 expirationYear="2024"
+xtx = 'eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjYzVlMGMxMS02OWRkLTRkODEtODJkYy1kZjNjOTBkN2M1NDgifQ.XCXBsAi6fmEFKAhTVSR-NaQ9n4zvxfZvmVCn7cUASrk'
+
+atc_headers = {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "en-CA",
+    "Content-Length": "47",
+    "content-type": "application/json",
+    "origin": "https://www.bestbuy.ca",
+    "postal-code": postalCode,
+    "region-code": province,
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
+    "Host": "www.bestbuy.ca"}
+
+order_headers = {
+    "accept": "application/vnd.bestbuy.checkout+json",
+    "accept-encoding": "gzip, deflate, br",
+    "accept-language": "en-CA",
+    "content-type": "application/json",
+    "content-length": "493",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36",
+    "Host": "www.bestbuy.ca",
+    "referer": "https://www.bestbuy.ca/checkout/",
+    "x-dtreferer": "https://www.bestbuy.ca/checkout/#/en-ca/shipping/QC/H3G0E1",
+    "x-tx": xtx
+}
