@@ -9,6 +9,7 @@ from requests_html import HTMLSession
 import traceback
 import bestbuy_bot.args as args
 from util.decorators import *
+import util.decorators as decorators
 ########################### General param ##########################
 ####REPLACE the address, credit card info in the submit shipping, payment and order section
 #the cookie will be expired in an hour, haven't tested much, but this seems to be the case
@@ -31,7 +32,8 @@ purchased=False
 
 
 
-class bestbuy:
+class bestbuy():
+
     @debug
     def __init__(self,proxy=None, proxyornot=False, oneonly = True):
         self.oneonly = oneonly
@@ -40,6 +42,8 @@ class bestbuy:
         self.proxyornot = proxyornot
         self.timeout=10
         self.set_cookies()
+        decorators.debug_mode=True
+
 
     def start_bot(self):
         lineItems = {}
@@ -72,7 +76,6 @@ class bestbuy:
         self.session.cookies.set('tx', xtx)
         for name, val in self.session.cookies.items():
             print(name, val)
-        print('ok')
         response = self.session.get('https://www.bestbuy.ca/checkout/?qit=1')
         print(response, response.text)
 
@@ -137,13 +140,9 @@ class bestbuy:
             r = self.session.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies, timeout=timeout)
         else:
             r = self.session.post(order_url,headers=shipping_headers,json=data, cookies=self.session.cookies, timeout=timeout)
-        print("#######################")
-        print('submit shipping')
         print(r.text)
         id = json.loads(r.text)["id"]
         totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
-        print('exiting at shipping as this is a test run, find this line and comment out the next line if you want real runs')
-        #exit(0)
         return [id, totalPurchasePrice]
 
     @debug
@@ -180,9 +179,7 @@ class bestbuy:
         else:
             r = self.session.post(url, headers=headers,json=data, cookies = self.session.cookies, timeout=timeout)
         order_detail = json.loads(r.text)
-        print("#################")
-        print('submit order')
-        print(order_detail)
+        print('order detail', order_detail)
         if order_detail['orderNumber'] != 'null' and order_detail['orderNumber'] != None:
             print('order ' + order_detail['orderNumber'] + " Successfully placed")
             return True

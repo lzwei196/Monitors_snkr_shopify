@@ -2,9 +2,10 @@ import time
 import traceback
 import requests
 
+debug_mode=True
+
 def timer(f):
     def timed(*args, **kw):
-
         ts = time.time()
         result = f(*args, **kw)
         te = time.time()
