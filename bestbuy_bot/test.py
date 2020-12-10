@@ -32,7 +32,7 @@ cookies1 = cookie_format(sample2)
 from bestbuy_bot.bestbuy_bot_working import bestbuy
 
 bestbuy = bestbuy()
-exit(0)
+bestbuy.start_bot()
 cookies = bestbuy.session.cookies
 
 

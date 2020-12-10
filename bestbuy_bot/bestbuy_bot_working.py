@@ -22,14 +22,12 @@ url = "https://www.bestbuy.ca"
 order_url = "https://www.bestbuy.ca/api/checkout/checkout/orders"
 #bestbuy restocks at each quater
 the_time = ["14","15","59","0","29","30","44","45","55","56"]
-sku = "14962185"
+sku = '10133041'
+#sku = "14962185"
 #14962193 14962184
 xtx = args.xtx
 ####################################################################
 purchased=False
-
-
-
 
 
 class bestbuy():
@@ -53,6 +51,7 @@ class bestbuy():
                 obj = self.submit_shipping(lineItems)
                 id = obj[0]
                 totalPurchasePrice = obj[1]
+                return
                 self.submit_payment(id)
                 if self.submit_order(id, totalPurchasePrice) and self.oneonly:
                     global purchased
