@@ -32,6 +32,7 @@ def check():
         response = session.get(api_endpoint)
         data = response.json()
         print(data)
+        global gmail
         for availability in data['skuAvailability']:
             if availability['inStock'] == True:
                 print('restocked')
