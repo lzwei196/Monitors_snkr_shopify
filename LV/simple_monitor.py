@@ -46,7 +46,7 @@ def check():
             else:
                 print('out of stock')
 
-if __name__=='__main':
+if __name__=='__main__':
     for i in range(8):
         check()
         sleep(60)
