@@ -3,6 +3,7 @@ import sys
 from notifications.messenger import Messenger
 from notifications.mails import Email
 from time import sleep
+import datetime as dt
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
@@ -31,6 +32,7 @@ def check():
         api_endpoint = API_BASE % identifier
         response = session.get(api_endpoint)
         data = response.json()
+        print(dt.datetime.now())
         print(data)
         global gmail
         for availability in data['skuAvailability']:
