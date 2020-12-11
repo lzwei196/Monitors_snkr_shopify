@@ -29,12 +29,13 @@ alerts_sent=0
 
 def check():
     global alerts_sent
+    print(dt.datetime.now())
     for url in PRODUCT_URLS:
         identifier = url.split('-')[-1]
         api_endpoint = API_BASE % identifier
         response = session.get(api_endpoint)
         data = response.json()
-        print(dt.datetime.now())
+
         print(data)
         global gmail
         for availability in data['skuAvailability']:
