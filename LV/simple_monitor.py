@@ -25,8 +25,10 @@ if len(sys.argv) < 2:
 
 pwd=sys.argv[1]
 email = "yaqixyzlancelot@gmail.com"
+alerts_sent=0
 
 def check():
+    global alerts_sent
     for url in PRODUCT_URLS:
         identifier = url.split('-')[-1]
         api_endpoint = API_BASE % identifier
@@ -45,6 +47,7 @@ def check():
                 print(msg)
                 for name, email_addr in GMAIL_LIST.items():
                     gmail.send_msg(email_addr, subject, msg)
+                alerts_sent+=1
                 break
             else:
                 print('out of stock')
@@ -52,6 +55,9 @@ def check():
 if __name__=='__main__':
     for i in range(60):
         check()
+        if alerts_sent > len(PRODUCT_URLS):
+            print('exiting due to notification sent')
+            exit(0)
         sleep(60)
 
 
