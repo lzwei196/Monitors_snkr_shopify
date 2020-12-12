@@ -2,6 +2,7 @@ from requests_html import HTMLSession
 import sys
 from notifications.messenger import Messenger
 from notifications.mails import Email
+from notifications.discord import send_webhook
 from time import sleep
 import datetime as dt
 
@@ -49,6 +50,7 @@ def check():
                 print(msg)
                 for name, email_addr in GMAIL_LIST.items():
                     gmail.send_msg(email_addr, subject, msg)
+                send_webhook('LV RESTOCK', url, url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
                 alerts_sent+=1
                 break
             else:
