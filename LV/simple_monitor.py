@@ -12,6 +12,8 @@ MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
 GMAIL_LIST={'Katherine Nguyen': 'nhunga161@gmail.com',
                 'Jolin Lu': 'Jolin.luzhang@gmail.com'}
 
+ALERTED={}
+
 
 API_BASE='https://api.louisvuitton.com/api/eng-ca/catalog/availability/%s'
 
@@ -30,7 +32,7 @@ email = "yaqixyzlancelot@gmail.com"
 alerts_sent=0
 
 def check():
-    global alerts_sent
+    global ALERTED
     print(dt.datetime.now())
     for url in PRODUCT_URLS:
         identifier = url.split('-')[-1]
@@ -48,10 +50,15 @@ def check():
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"
                 print(msg)
-                for name, email_addr in GMAIL_LIST.items():
-                    gmail.send_msg(email_addr, subject, msg)
-                send_webhook('LV RESTOCK', url, url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
-                alerts_sent+=1
+                if url not in ALERTED:
+                    ALERTED[url]=60
+                    for name, email_addr in GMAIL_LIST.items():
+                        gmail.send_msg(email_addr, subject, msg)
+                    send_webhook('LV RESTOCK', url, url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
+                elif ALERTED[url] <= 1:
+                    ALERTED.pop(url)
+                else:
+                    ALERTED[url] = ALERTED[url] -1
                 break
             else:
                 print('out of stock')
