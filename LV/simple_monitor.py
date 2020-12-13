@@ -20,7 +20,9 @@ API_BASE='https://api.louisvuitton.com/api/eng-ca/catalog/availability/%s'
 session = HTMLSession()
 PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
                 'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
-                'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767']
+                'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767',
+                'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
+                'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v']
 gmail=None
 
 if len(sys.argv) < 2:
