@@ -18,8 +18,9 @@ Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
 AUTO_QUIT = True
+MAX_RETRY=4
 
-@debug
+
 def prints(*args):
     # overloading default print for this file so that you can turn off all prints with VERBOSE
     # use this prints instead of print() for this file
@@ -56,6 +57,11 @@ class Bot:
     def scroll_to_element(self, element):
         actions = ActionChains(self.browser)
         actions.move_to_element(element).perform()
+
+    def scroll_to_element_and_click(self, element):
+        actions = ActionChains(self.browser)
+        hover = actions.move_to_element(element)
+        hover.click().perform()
 
     def enable_network_logs(self):
         # recreate browser object with performance logging
@@ -131,7 +137,7 @@ class Bot:
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
         element = action.__self__
-        if retries >3:
+        if retries >MAX_RETRY:
             traceback.print_exc()
             raise Exception
         if action_name is None:
@@ -140,21 +146,15 @@ class Bot:
 
         try:
             action(*args)
-        except ElementClickInterceptedException:
+        except (ElementClickInterceptedException, ElementNotVisibleException) as e:
             #self.browser.fullscreen_window()
             self.scroll_to_element(element)
             sleep(1)
             return self.action(action,*args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries = retries +1)
-        except ElementNotInteractableException:
+        except (ElementNotInteractableException, StaleElementReferenceException) as e:
             sleep(3)
             return self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
                                action_name=action_name,retries = retries +1)
-        except ElementNotVisibleException:
-            #self.browser.fullscreen_window()
-            self.scroll_to_element(element)
-            sleep(1)
-            return self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
-                               action_name=action_name, retries=retries + 1)
         except Exception as e:
             prints('failed perform %s' % action_name)
             error_msg = str(e)
@@ -164,8 +164,9 @@ class Bot:
                 sleep(1)
                 return self.action(action, *args, verification=verification,
                                    input_box_verification=input_box_verification, action_name=action_name,retries = retries +1)
-            traceback.print_exc()
-            raise
+            else:
+                traceback.print_exc()
+                raise
 
         if verification:
             success = self.verify(verification)
@@ -174,6 +175,7 @@ class Bot:
                 return True
             else:
                 prints('failed to verify that we performed %s' % action_name)
+                self.action(action, *args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries=retries+1)
                 return False
 
         if input_box_verification is not None:
