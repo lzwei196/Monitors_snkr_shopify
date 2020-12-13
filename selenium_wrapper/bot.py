@@ -199,7 +199,7 @@ class Bot:
             func = self.types[type]
             element = func(text)
             self.current_element=element
-            return True, element
+            return element, element
         except NoSuchElementException:
             prints('failed to find elment %s by %s' % (text, type))
             return False, None
@@ -229,5 +229,5 @@ if __name__ == "__main__":
     test.action(login_button.click, verification=v2, action_name='pressing log in button')
 
     # save time by using pre-defined verfication as input, find() will ignore first two params so just put whatever
-    success, email_box = test.find(0,0,verification=v2)
+    success, email_box = test.find(verification=v2)
     test.action(email_box.send_keys, 'email@mail.com')

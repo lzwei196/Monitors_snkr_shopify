@@ -26,7 +26,7 @@ def debug(f):
             print(f.__name__, "failed with args: ", *args, kw)
             #traceback.print_exc()
             raise
-        print('exiting', f.__name__)
+        print('\nexiting', f.__name__, '\n\n')
         return result
     return timed
 
