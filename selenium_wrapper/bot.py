@@ -43,7 +43,7 @@ class Bot:
         self.browser = webdriver.Chrome(driver_path, chrome_options=options)
         self.browser.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
         self.browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
-        
+
         self.driver_path = driver_path
         # store functions in dictionaries so we can make our own find functions with error handling and logs
         # todo, incompleted list of functions

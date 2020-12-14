@@ -1,5 +1,6 @@
 from requests_html import HTMLSession
 import sys
+import platform
 from notifications.messenger import Messenger
 from notifications.mails import Email
 from notifications.discord import send_webhook
@@ -22,9 +23,10 @@ PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-acces
                 'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
                 'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767',
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
-                'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v']
+                'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v',
+                ]
 gmail=None
-
+QUIET_PERIOD=5
 if len(sys.argv) < 2:
     print('please pass in pwd as param')
     exit(0)
@@ -32,6 +34,13 @@ if len(sys.argv) < 2:
 pwd=sys.argv[1]
 email = "yaqixyzlancelot@gmail.com"
 alerts_sent=0
+
+def alert(subject, msg, url):
+    for name, email_addr in GMAIL_LIST.items():
+        gmail.send_msg(email_addr, subject, msg)
+    send_webhook(f'LV RESTOCK via {platform.system()}', url,
+                 url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
+
 
 def check():
     global ALERTED
@@ -53,14 +62,16 @@ def check():
                 subject = "LV RESTOCK ALERT"
                 print(msg)
                 if url not in ALERTED:
-                    ALERTED[url]=60
-                    for name, email_addr in GMAIL_LIST.items():
-                        gmail.send_msg(email_addr, subject, msg)
-                    send_webhook('LV RESTOCK', url, url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
-                elif ALERTED[url] <= 1:
-                    ALERTED.pop(url)
+                    ALERTED[url]=dt.datetime.now()
+                    alert(subject, msg, url)
                 else:
-                    ALERTED[url] = ALERTED[url] -1
+                    minutes_diff = (dt.datetime.now() - ALERTED[url]).total_seconds() / 60.0
+                    if minutes_diff > QUIET_PERIOD:
+                        ALERTED[url] = dt.datetime.now()
+                        alert(subject, msg, url)
+                    else:
+                        print(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago")
+
                 break
             else:
                 print('out of stock')

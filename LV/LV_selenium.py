@@ -20,7 +20,6 @@ class LV(Bot):
         self.visit_site('https://www.google.com')
 
         v_atc =Verification(type='xpath', text='//*[contains(text(), "Place in Cart")]')
-        # v_atc = Verification(type='xpath', text='//*[@id="__layout"]/div/div[2]/div[2]/div/div[1]/div[2]/div[4]/button')
         v_view_cart = Verification(type='xpath', text='//*[@class="lv-icon"]')
         v_bag = Verification(type='xpath', text='//*[contains(text(), "View Your Shopping Bag")]')
         v_proceed = Verification(type='xpath', text='//*[@class="goToCheckout proceedBtn tagClick"]')
@@ -31,16 +30,15 @@ class LV(Bot):
         if atc_btn.text == 'Call for Availability':
             print(f"WARNING: {product_url} atc button appears to say Call for Availability")
             raise UnavailableException
-        else:
-            self.scroll_to_element_and_click(atc_btn)
-            #self.action(atc_btn.hover, verification=v_view_cart, action_name='placing to cart')
-            view_vart_btn, _ = self.find(verification=v_view_cart)
-            self.action(view_vart_btn.click, verification=v_bag, action_name='view  cart')
-            bag_btn, _ = self.find(verification=v_bag)
-            self.action(bag_btn.click, verification=v_proceed, action_name='view bag')
-            #self.visit_site('https://secure.louisvuitton.com/eng-ca/cart')
-            proceed_btn, _ = self.find(verification=v_proceed)
-            self.action(proceed_btn.click, verification=None, action_name='proceed')
+
+        self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
+        view_vart_btn, _ = self.find(verification=v_view_cart)
+        self.action(view_vart_btn.click, verification=v_bag, action_name='view cart')
+        bag_btn, _ = self.find(verification=v_bag)
+        self.action(bag_btn.click, verification=v_proceed, action_name='view bag')
+        #self.visit_site('https://secure.louisvuitton.com/eng-ca/cart')
+        proceed_btn, _ = self.find(verification=v_proceed)
+        self.action(proceed_btn.click, verification=None, action_name='proceed')
 
 
 

@@ -1,5 +1,6 @@
 from pprint import pprint
 from selenium_wrapper.selenium_support import *
+import platform
 sample = {"addressInfo":[{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":4387258504,"saveToProfile":True,"country":"CA","locationId":None,"overrideAddressVerification":False,"suggestedAddress":{"addressLine1":"1510-1450 boul René-Lévesque O","addressLine2":"","city":"MONTRÉAL","state":"QC","postalCode":"H3G 0E1","country":"CANADA","poBox":"","generalDelivery":"","routeService":"","buildingName":"Yul Tour 1","largeVolRecieverName":"","verificationLevel":"VERIFIED","addressType":"letterCarrier"}}]}
 
 
@@ -23,9 +24,9 @@ def cookie_format(string):
     return cookies
 
 # pprint(cookie_format(sample2))
-with open('../chromedriver.exe', 'rb') as f:
-    data = f.read()
-    print(data[0:900])
+
+print(platform.system())
+
 
 
 
