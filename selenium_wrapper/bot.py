@@ -36,7 +36,14 @@ class Bot:
         # set the brower object and find function types
         options = Options()
         options.headless = headless
+        ##anti detection
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         self.browser = webdriver.Chrome(driver_path, chrome_options=options)
+        self.browser.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
+        self.browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
+        
         self.driver_path = driver_path
         # store functions in dictionaries so we can make our own find functions with error handling and logs
         # todo, incompleted list of functions
@@ -47,6 +54,7 @@ class Bot:
         # todo, incompleted list of By types
         self.verification_types={'xpath': By.XPATH}
         prints('finished init with', driver_path)
+
 
     def __del__(self):
         if AUTO_QUIT is True:

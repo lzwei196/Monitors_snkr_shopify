@@ -22,8 +22,10 @@ def cookie_format(string):
         cookies[item[0]]=item[1]
     return cookies
 
-pprint(cookie_format(sample2))
-
+# pprint(cookie_format(sample2))
+with open('../chromedriver.exe', 'rb') as f:
+    data = f.read()
+    print(data[0:900])
 
 
 
