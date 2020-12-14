@@ -36,10 +36,10 @@ email = "yaqixyzlancelot@gmail.com"
 alerts_sent=0
 
 def alert(subject, msg, url):
-    for name, email_addr in GMAIL_LIST.items():
-        gmail.send_msg(email_addr, subject, msg)
     send_webhook(f'LV RESTOCK via {platform.system()}', url,
                  url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
+    for name, email_addr in GMAIL_LIST.items():
+        gmail.send_msg(email_addr, subject, msg)
 
 
 def check():
