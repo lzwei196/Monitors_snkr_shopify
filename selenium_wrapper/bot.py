@@ -187,9 +187,9 @@ class Bot:
                 self.action(action, *args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries=retries+1)
                 return False
 
-        if input_box_verification is not None:
+        if input_box_verification is True:
             text = args[0]
-            entered_text = input_box_verification.get_attribute('value')
+            entered_text = element.get_attribute('value')
             if entered_text != text:
                 prints('tried perform %s but text is not entered' % action_name)
                 raise
