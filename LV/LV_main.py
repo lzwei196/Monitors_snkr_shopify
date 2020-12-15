@@ -5,6 +5,7 @@ import time
 from pprint import pprint
 import selenium_wrapper.selenium_support as ss
 from util.decorators import *
+import requests
 
 
 
@@ -31,7 +32,7 @@ class LV():
         pprint(response.json())
 
     @debug
-    def atc(self, product_url, identifier, skuId):
+    def atc(self, product_url, identifier, skuId, test_stock=False):
         data = {"catalogRefIds":[skuId],"productId":identifier,"quantity":1}
         response = self.session.get(product_url)
         print(response, 'url')
@@ -49,9 +50,11 @@ class LV():
             'sec-fetch-dest': 'empty',
             'referer': 'https://ca.louisvuitton.com/eng-ca/products/game-on-classic-bikini-bottoms-nvprod2550060v',
             'accept-language': 'en-US,en;q=0.9'}
-
         response = self.session.put('https://api.louisvuitton.com/api/eng-ca/cart', json=data, headers=headers)
         print(response, 'cart put', response.text)
+        print(response.status_code==200)
+        if test_stock is True:
+            return response
         response = self.session.get('https://api.louisvuitton.com/api/eng-ca/cart/mini')
         print(response, 'mini')
         response = self.session.get('https://secure.louisvuitton.com/akam-sw-policy.json')
@@ -67,15 +70,19 @@ class LV():
         response = self.session.options('https://secure.louisvuitton.com/ajaxsecure/loadCommerceHeadersJson.jsp', params=param)
         print(response, 'loadCommerceHeadersJson', response.text)
 
-        exit(0)
+
         param.pop('_')
         response = self.session.get('https://secure.louisvuitton.com/ajaxsecure/commerce/microShoppingBag.jsp', params=param)
         print(response,response.text)
 
 
 if __name__=='__main__':
+    # data = {"catalogRefIds": ['1A8K7E'], "productId": 'nvprod2480036v', "quantity": 1}
+    # response = requests.put('https://api.louisvuitton.com/api/eng-ca/cart', json=data)
+    # print(response, 'cart put', response.text)
+    # exit(0)
     bot = LV()
-    bot.set_cookies()
+    #bot.set_cookies()
     bot.atc('https://ca.louisvuitton.com/eng-ca/products/trocadero-richelieu-nvprod2480036v',
             'nvprod2480036v',
-            '1A8K7E')
+            '1A8K7E', test_stock=True)

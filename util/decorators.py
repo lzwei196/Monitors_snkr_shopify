@@ -19,14 +19,18 @@ def timer(f):
 
 def debug(f):
     def timed(*args, **kw):
-        print('\nentering',f.__name__ )
+        name = f.__name__
+        self = args[0]
+        if "__" in name:
+            name = str(self.__class__) + f.__name__
+        print('\nentering',name )
         try:
             result = f(*args, **kw)
         except:
             print(f.__name__, "failed with args: ", *args, kw)
             #traceback.print_exc()
             raise
-        print('\nexiting', f.__name__, '\n\n')
+        print('\nexiting', name, '\n\n')
         return result
     return timed
 

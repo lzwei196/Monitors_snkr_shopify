@@ -6,6 +6,7 @@ from notifications.mails import Email
 from notifications.discord import send_webhook
 from time import sleep
 import datetime as dt
+from LV import LV_main
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
@@ -34,12 +35,23 @@ if len(sys.argv) < 2:
 pwd=sys.argv[1]
 email = "yaqixyzlancelot@gmail.com"
 alerts_sent=0
+lv_client=LV_main.LV()
 
 def alert(subject, msg, url):
     send_webhook(f'LV RESTOCK via {platform.system()}', url,
                  url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
     for name, email_addr in GMAIL_LIST.items():
         gmail.send_msg(email_addr, subject, msg)
+
+def test_atc(product_url, identifier, skuId):
+    global lv_client
+    response = lv_client.atc(product_url, identifier, skuId, test_stock=True)
+    if response.status_code==200:
+        print(f'atc status code {response.status_code}')
+        return True
+    else:
+        print(f'tried to add {skuId} to cart but was unable to with status code {response.status_code}')
+        return False
 
 
 def check():
@@ -50,7 +62,6 @@ def check():
         api_endpoint = API_BASE % identifier
         response = session.get(api_endpoint)
         data = response.json()
-
         print(data)
         global gmail
         for availability in data['skuAvailability']:
@@ -61,7 +72,7 @@ def check():
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"
                 print(msg)
-                if url not in ALERTED:
+                if url not in ALERTED and test_atc(url, identifier, availability['skuId']):
                     ALERTED[url]=dt.datetime.now()
                     alert(subject, msg, url)
                 else:

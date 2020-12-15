@@ -35,6 +35,9 @@ class Email():
             self.server.login(self.email, self.pwd)
             self.email=self.email
             self.send_msg(to, subject, body)
+        except:
+            traceback.print_exc()
+            print(f'failed to send email to {to}')
 
 
 

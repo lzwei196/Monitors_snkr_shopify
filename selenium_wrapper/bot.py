@@ -18,7 +18,7 @@ Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
 AUTO_QUIT = True
-MAX_RETRY=4
+MAX_RETRY=6
 
 
 def prints(*args):
@@ -48,6 +48,7 @@ class Bot:
         # store functions in dictionaries so we can make our own find functions with error handling and logs
         # todo, incompleted list of functions
         self.types={'class': self.browser.find_element_by_class_name,
+                    'css':self.browser.find_element_by_css_selector,
                    'xpath': self.browser.find_element_by_xpath,
                     'id': self.browser.find_element_by_id}
         #simmilar idea as above
@@ -154,12 +155,12 @@ class Bot:
 
         try:
             action(*args)
-        except (ElementClickInterceptedException, ElementNotVisibleException) as e:
+        except (ElementClickInterceptedException, ElementNotVisibleException, ElementNotInteractableException) as e:
             #self.browser.fullscreen_window()
             self.scroll_to_element(element)
             sleep(1)
             return self.action(action,*args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries = retries +1)
-        except (ElementNotInteractableException, StaleElementReferenceException) as e:
+        except (StaleElementReferenceException) as e:
             sleep(3)
             return self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
                                action_name=action_name,retries = retries +1)
@@ -173,7 +174,7 @@ class Bot:
                 return self.action(action, *args, verification=verification,
                                    input_box_verification=input_box_verification, action_name=action_name,retries = retries +1)
             else:
-                traceback.print_exc()
+                # traceback.print_exc()
                 raise
 
         if verification:
@@ -196,7 +197,7 @@ class Bot:
                 prints('successfully performed %s' % action_name)
                 return True
 
-    def find(self,type=None, text=None, verification = None):
+    def find(self,type=None, text=None, verification=None, retries=0):
         # if verification is given, type and text param wont be used
         # return: Bool, Selenium Element.
         # since new selenium seems to throw error when element is not found, catch error and return false when element not found
@@ -212,10 +213,13 @@ class Bot:
             return element, element
         except NoSuchElementException:
             prints('failed to find elment %s by %s' % (text, type))
-            return False, None
+            if retries>MAX_RETRY:
+                raise
+            else:
+                self.find(type=type, text=text, verification=verification, retries=retries+1)
         except Exception as e:
             traceback.print_exc()
-            return False, None
+            raise
 
 
 
