@@ -60,6 +60,32 @@ def exception_handler(f):
         return result
     return handler
 
+def exception_handler_LV(f):
+    def handler(*args, **kw):
+        self = args[0]
+        try:
+            result = f(*args, **kw)
+        except requests.exceptions.ConnectTimeout:
+            print('connect timeout, sending out alert anyways')
+            # self.set_cookies()
+            # print('retrying ', f.__name__)
+            # return handler(*args, **kw)
+        except requests.exceptions.ReadTimeout:
+            print('read timeout, sending out alert anyways')
+            # self.set_cookies()
+            # print('retrying ', f.__name__)
+            # return handler(*args, **kw)
+        except KeyError:
+            print('likely response had no key "id" in json, but might be caused by something else')
+            traceback.print_exc()
+            # print('retrying ', f.__name__)
+            # return handler(*args, **kw)
+        except:
+            traceback.print_exc()
+            raise
+        return result
+    return handler
+
 # @debug
 # def test(a, b, c, keyarg=0):
 #     a = {}

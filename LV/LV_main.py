@@ -9,7 +9,7 @@ import requests
 
 
 
-
+TIMOUT=10
 
 class LV():
     @debug
@@ -21,22 +21,23 @@ class LV():
     def set_cookies(self):
         self.session.headers.update({'referer': 'https://www.google.com/',
                                      'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36'})
-        response = self.session.get('https://ca.louisvuitton.com/eng-ca/homepage')
+        response = self.session.get('https://ca.louisvuitton.com/eng-ca/homepage', timeout=TIMOUT)
         print(response)
 
-        response = self.session.get('https://ca.louisvuitton.com/akam-sw-policy.json')
+        response = self.session.get('https://ca.louisvuitton.com/akam-sw-policy.json', timeout=TIMOUT)
         print(response)
         pprint(response.json())
-        response = self.session.get('https://api.louisvuitton.com/api/eng-ca/account/user')
+        response = self.session.get('https://api.louisvuitton.com/api/eng-ca/account/user', timeout=TIMOUT)
         print(response)
         pprint(response.json())
 
-    @debug
+    @timer
+    @exception_handler_LV
     def atc(self, product_url, identifier, skuId, test_stock=False):
         data = {"catalogRefIds":[skuId],"productId":identifier,"quantity":1}
         response = self.session.get(product_url)
         print(response, 'url')
-        response = self.session.options('https://api.louisvuitton.com/api/eng-ca/cart')
+        response = self.session.options('https://api.louisvuitton.com/api/eng-ca/cart', timeout=TIMOUT)
         print(response, 'cart')
 
         headers = {
@@ -50,14 +51,14 @@ class LV():
             'sec-fetch-dest': 'empty',
             'referer': 'https://ca.louisvuitton.com/eng-ca/products/game-on-classic-bikini-bottoms-nvprod2550060v',
             'accept-language': 'en-US,en;q=0.9'}
-        response = self.session.put('https://api.louisvuitton.com/api/eng-ca/cart', json=data, headers=headers)
+        response = self.session.put('https://api.louisvuitton.com/api/eng-ca/cart', json=data, headers=headers, timeout=TIMOUT)
         print(response, 'cart put', response.text)
         print(response.status_code==200)
         if test_stock is True:
             return response
-        response = self.session.get('https://api.louisvuitton.com/api/eng-ca/cart/mini')
+        response = self.session.get('https://api.louisvuitton.com/api/eng-ca/cart/mini', timeout=TIMOUT)
         print(response, 'mini')
-        response = self.session.get('https://secure.louisvuitton.com/akam-sw-policy.json')
+        response = self.session.get('https://secure.louisvuitton.com/akam-sw-policy.json', timeout=TIMOUT)
         print(response, 'policy')
 
         param={'storeLang':'eng - ca',
@@ -82,7 +83,7 @@ if __name__=='__main__':
     # print(response, 'cart put', response.text)
     # exit(0)
     bot = LV()
-    #bot.set_cookies()
+    bot.set_cookies()
     bot.atc('https://ca.louisvuitton.com/eng-ca/products/trocadero-richelieu-nvprod2480036v',
             'nvprod2480036v',
             '1A8K7E', test_stock=True)
