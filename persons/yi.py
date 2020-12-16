@@ -13,6 +13,7 @@ class Yi(Person):
             'phone': '7789260206',
             'firstName': 'Yi',
             'lastName': 'Yang',
+            'province_full': 'British Columbia'
 
         }
         super(Yi, self).__init__(csv, **data)

@@ -9,6 +9,7 @@ class Person():
     province = None
     phone = None
     email = None
+    province_full=None
     def __init__(self, csv, **kwargs):
         self.csv=csv
         self.__dict__.update(kwargs)

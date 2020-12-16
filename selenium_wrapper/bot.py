@@ -63,6 +63,24 @@ class Bot:
             sleep(3)
             self.browser.quit()
 
+    def press_key(self, key, verification=None, retries=0):
+        if verification:
+            success = self.verify(verification)
+            if success:
+                prints(f'successfully pressed {key} {retries} times and {verification.text} became clickable')
+                return True
+            else:
+                prints(f'tried to press {key} but the element {verification.text} is still unclickable, retying...' )
+                self.press_key( key, verification=verification, retries=retries+1)
+
+        actions = ActionChains(self.browser)
+        actions.send_keys(key)
+        actions.perform()
+
+        if retries > MAX_RETRY:
+            raise
+
+
     def scroll_to_element(self, element):
         actions = ActionChains(self.browser)
         actions.move_to_element(element).perform()
@@ -134,14 +152,18 @@ class Bot:
             return False
 
     def generate_action_name(self, element, act):
-        name = element.get_attribute('name')
-        id = element.get_attribute('id')
-        class_ = element.get_attribute('class')
-        arr = [name, id, class_]
-        for item in arr:
-            if item is not None and item != '':
-                return '%s on %s' % (act, item)
-        return '%s on %s' % (act, 'unknown element')
+        try:
+            name = element.get_attribute('name')
+            id = element.get_attribute('id')
+            class_ = element.get_attribute('class')
+            arr = [name, id, class_]
+            for item in arr:
+                if item is not None and item != '':
+                    return '%s on %s' % (act, item)
+            return '%s on %s' % (act, 'unknown element')
+        except:
+            return '%s on %s' % (act, 'unknown element')
+
 
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
@@ -210,7 +232,7 @@ class Bot:
             func = self.types[type]
             element = func(text)
             self.current_element=element
-            return element, element
+            return element
         except NoSuchElementException:
             prints('failed to find elment %s by %s' % (text, type))
             if retries>MAX_RETRY:
