@@ -37,7 +37,8 @@ email = "yaqixyzlancelot@gmail.com"
 lv_client=LV_main.LV()
 
 def alert(subject, msg, url):
-    send_webhook(f'LV RESTOCK via {platform.system()}', url,
+
+    send_webhook(f'LV RESTOCK via {platform.system()} at {dt.datetime.now()}', url,
                  url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
     global gmail
     if gmail is None:

@@ -67,3 +67,5 @@ if __name__=='__main__':
 
     lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
     lv.enter_deliver_info('123')
+
+    #taskkill /im chromedriver.exe /f
