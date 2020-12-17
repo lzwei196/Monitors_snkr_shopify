@@ -13,7 +13,10 @@ class Yi(Person):
             'phone': '7789260206',
             'firstName': 'Yi',
             'lastName': 'Yang',
-            'province_full': 'British Columbia'
+            'province_full': 'British Columbia',
+            'card_num': '4501123412341234', #todo
+            'card_month': '02',
+            'card_year': '2022'
 
         }
         super(Yi, self).__init__(csv, **data)

@@ -10,6 +10,11 @@ class Person():
     phone = None
     email = None
     province_full=None
+    card_num=None
+    card_month=None
+    card_year=None
+
+
     def __init__(self, csv, **kwargs):
         self.csv=csv
         self.__dict__.update(kwargs)
@@ -30,3 +35,4 @@ class Sample(Person):
 if __name__=='__main__':
     s = Sample('csv')
     print(s.email)
+    print(int('01'))

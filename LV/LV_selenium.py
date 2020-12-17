@@ -69,19 +69,63 @@ class LV(Bot):
 
     def submit_shipping(self):
         pick_up_btn=None
+
+        #do pick up, or delivery when pick up is not available
         try:
             v_pickup = Verification(type='xpath', text='//*[@id="clickAndCollect"]')
             pick_up_btn = self.find(verification=v_pickup)
         except:
             print('collect in store not available, doing delivery instead')
+
         if pick_up_btn is None:
             self.enter_billing_info()
         else:
             self.choose_pickup_location(pick_up_btn)
 
+        #rest of the workflow
         v_email = Verification(type='xpath', text='//*[@id="email"]')
+        v_proceed = Verification(type='xpath', text='//*[@id="globalSubmit"]')
+        v_credit_card_num = Verification(type='xpath', text='//*[@id="creditCardNumber"]')
+
+
         email_input = self.find(verification=v_email)
         self.action(email_input.send_keys, self.person.email, input_box_verification=True)
+        proceed_btn = self.find(verification=v_proceed)
+        self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to billing')
+
+        self.fill_credit_card()
+        if pick_up_btn is not None:
+            self.enter_billing_info()
+
+        proceed_btn = self.find(verification=v_proceed) #same id but should be on different page by now
+        self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to checkout')
+
+
+        #todo check if pick_up_btn is not None, if its not None need to call self.enter_billing_info()
+
+    def fill_credit_card(self):
+        v_credit_card_num = Verification(type='xpath', text='//*[@id="creditCardNumber"]')
+        v_credit_card_holder = Verification(type='xpath', text='//*[@id="creditCardHoldersName"]')
+        v_credit_card_month = Verification(type='xpath', text='//*[@id="expirationMonth"]')
+        v_credit_card_year = Verification(type='xpath', text='//*[@id="expirationYear"]')
+        v_credit_card_csv = Verification(type='xpath', text='//*[@id="cardVerificationNumber_0"]')
+
+        card_num_input = self.find(verification=v_credit_card_num)
+        self.action(card_num_input.send_keys, self.person.card_num, input_box_verification=True)
+        card_holder_input = self.find(verification=v_credit_card_holder)
+        self.action(card_holder_input.send_keys, f'{self.person.firstName} {self.person.lastName}' , input_box_verification=True)
+        card_csv_input = self.find(verification=v_credit_card_csv)
+        self.action(card_csv_input.send_keys, self.person.csv, input_box_verification=True)
+
+        card_month = self.find(verification=v_credit_card_month)
+        select=Select(card_month)
+        self.action(select.select_by_value, str(int(me.card_month))) #to format 01 to 1
+
+        card_year = self.find(verification=v_credit_card_year)
+        select=Select(card_year)
+        self.action(select.select_by_value, me.card_year)
+
+
 
 
     def choose_pickup_location(self, pick_up_btn):
@@ -101,7 +145,8 @@ if __name__=='__main__':
     lv = LV('../chromedriver.exe',me, headless=False)
 
     #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
-    lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+    lv.atc('https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v')
     lv.submit_shipping()
 
     #taskkill /im chromedriver.exe /f

@@ -12,7 +12,8 @@ MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
 
 GMAIL_LIST={'Katherine Nguyen': 'nhunga161@gmail.com',
-                'Jolin Lu': 'Jolin.luzhang@gmail.com'}
+                #'Jolin Lu': 'Jolin.luzhang@gmail.com',
+            }
 
 ALERTED={}
 
