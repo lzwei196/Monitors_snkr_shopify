@@ -9,7 +9,7 @@ import datetime as dt
 from LV import LV_main, LV_selenium
 import traceback
 from persons.yi import *
-import platform
+
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
@@ -29,6 +29,7 @@ PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-acces
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
                 'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v',
                 # 'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767',
+                'https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v',
                 ]
 gmail=None
 QUIET_PERIOD=8
