@@ -72,7 +72,7 @@ def test_atc(product_url, identifier, skuId):
 def purchase(url):
     global lv_client
     try:
-        targets=[#'https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
+        targets=['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
                     'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575']
         if url not in targets:
             print('skipping purchase due to not high value targets')
@@ -124,7 +124,7 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    for i in range(1):
+    for i in range(60):
         start = dt.datetime.now()
         check()
         seconds_elapsed = (dt.datetime.now() - start).total_seconds()
