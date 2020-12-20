@@ -139,7 +139,7 @@ class LV(Bot):
         else:
             sleep(5)
             print('slight wait before collecting in store')
-            #self.choose_pickup_location(pick_up_btn)
+            self.choose_pickup_location(pick_up_btn)
             pick_up_btn=True
 
         #rest of the workflow
@@ -173,12 +173,12 @@ class LV(Bot):
 
 
 if __name__=='__main__':
-    me = Yi('434')
+    me = Yi('343')
     lv = LV('../chromedriver.exe',me, headless=True)
 
     #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
-    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
-    lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
+    lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
     lv.purchase()
 
     #taskkill /im chromedriver.exe /f
