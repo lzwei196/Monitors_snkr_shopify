@@ -1,4 +1,4 @@
-from persons.person import Person
+from persons.person import Person, Account
 
 class Yi(Person):
 
@@ -14,9 +14,13 @@ class Yi(Person):
             'firstName': 'Yi',
             'lastName': 'Yang',
             'province_full': 'British Columbia',
-            'card_num': '4501123412341234', #todo
+            'card_num': '4505530131063651', #todo
             'card_month': '02',
-            'card_year': '2022'
+            'card_year': '2024',
+            'LV_accs' : [ Account(username='yaqixyz@gmail.com', pwd='Canada2911.')
+                         ]
 
         }
         super(Yi, self).__init__(csv, **data)
+
+

@@ -18,7 +18,7 @@ Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
 AUTO_QUIT = True
-MAX_RETRY=6
+MAX_RETRY=5
 
 
 def prints(*args):
@@ -167,6 +167,8 @@ class Bot:
 
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
+        print('URL:', self.browser.current_url)
+        wait_time=3
         element = action.__self__
         if retries >MAX_RETRY:
             traceback.print_exc()
@@ -179,11 +181,11 @@ class Bot:
             action(*args)
         except (ElementClickInterceptedException, ElementNotVisibleException, ElementNotInteractableException) as e:
             #self.browser.fullscreen_window()
-            self.scroll_to_element(element)
-            sleep(1)
+            #self.scroll_to_element(element)
+            sleep(wait_time)
             return self.action(action,*args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries = retries +1)
         except (StaleElementReferenceException) as e:
-            sleep(3)
+            sleep(wait_time)
             return self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
                                action_name=action_name,retries = retries +1)
         except Exception as e:
@@ -192,7 +194,7 @@ class Bot:
             if 'Other element would receive the click' in error_msg:
                 #self.browser.fullscreen_window()
                 self.scroll_to_element(element)
-                sleep(1)
+                sleep(wait_time)
                 return self.action(action, *args, verification=verification,
                                    input_box_verification=input_box_verification, action_name=action_name,retries = retries +1)
             else:
@@ -206,6 +208,7 @@ class Bot:
                 return True
             else:
                 prints('failed to verify that we performed %s' % action_name)
+                sleep(wait_time)
                 self.action(action, *args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries=retries+1)
                 return False
 
@@ -213,7 +216,10 @@ class Bot:
             text = args[0]
             entered_text = element.get_attribute('value')
             if entered_text != text:
-                prints('tried perform %s but text is not entered' % action_name)
+                prints('tried perform %s but text is not entered, clearing and retrying...' % action_name)
+                element.clear()
+                self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
+                            action_name=action_name, retries=retries + 1)
                 raise
             else:
                 prints('successfully performed %s' % action_name)

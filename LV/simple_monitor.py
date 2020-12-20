@@ -6,7 +6,10 @@ from notifications.mails import Email
 from notifications.discord import send_webhook
 from time import sleep
 import datetime as dt
-from LV import LV_main
+from LV import LV_main, LV_selenium
+import traceback
+from persons.yi import *
+import platform
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
@@ -34,8 +37,14 @@ if len(sys.argv) < 2:
     exit(0)
 
 pwd=sys.argv[1]
+csv = sys.argv[2]
 email = "yaqixyzlancelot@gmail.com"
-lv_client=LV_main.LV()
+yi = Yi(csv)
+if platform.system() == "Windows":
+    driverpath = '../chromedriver.exe'
+else:
+    driverpath = '/home/yyi/Documents/GitHub/Goodlife-class-booking/chromedriver'
+lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
 def alert(subject, msg, url):
 
@@ -59,6 +68,27 @@ def test_atc(product_url, identifier, skuId):
         return False
 
 
+
+def purchase(url):
+    global lv_client
+    try:
+        targets=[#'https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
+                    'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575']
+        if url not in targets:
+            print('skipping purchase due to not high value targets')
+            return
+        lv_client.atc(url)
+        lv_client.purchase()
+        print('purchase successful, exiting')
+        exit(0)
+
+    except:
+        traceback.print_exc()
+        print(f"failed to purchase {url}")
+        del lv_client
+        lv_client = LV_selenium.LV(driverpath,yi, headless=True)
+
+
 def check():
     global ALERTED
     print(dt.datetime.now())
@@ -71,6 +101,7 @@ def check():
         global gmail
         for availability in data['skuAvailability']:
             if availability['inStock'] == True:
+                purchase(url)
                 print('restocked')
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"

@@ -1,3 +1,6 @@
+from collections import namedtuple
+
+Account = namedtuple('Account', 'username pwd')
 
 class Person():
     #declare here so pycharm and index them
@@ -13,12 +16,19 @@ class Person():
     card_num=None
     card_month=None
     card_year=None
+    LV_accs=None
+    LV_acc_offset=0
 
 
     def __init__(self, csv, **kwargs):
         self.csv=csv
         self.__dict__.update(kwargs)
         print(type(kwargs))
+
+    def get_LV_acc(self):
+        #todo
+        return self.LV_accs[0]
+
 
 
 class Sample(Person):
