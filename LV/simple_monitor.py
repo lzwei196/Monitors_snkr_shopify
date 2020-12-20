@@ -124,7 +124,7 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    for i in range(60):
+    for i in range(1):
         start = dt.datetime.now()
         check()
         seconds_elapsed = (dt.datetime.now() - start).total_seconds()
