@@ -1,4 +1,6 @@
 from collections import namedtuple
+import os
+import importlib
 
 Account = namedtuple('Account', 'username pwd')
 
@@ -19,7 +21,6 @@ class Person():
     LV_accs=None
     LV_acc_offset=0
 
-
     def __init__(self, csv, **kwargs):
         self.csv=csv
         self.__dict__.update(kwargs)
@@ -28,6 +29,13 @@ class Person():
     def get_LV_acc(self):
         #todo
         return self.LV_accs[0]
+
+    def load_purchase_history(self):
+        file_name = f'purchase_history/{self.__class__.__name__}.py'
+        #if file exist already
+        if os.path.isfile(file_name):
+            module = importlib.import_module(f'persons.purchase_history.{file_name}')
+
 
 
 
@@ -45,4 +53,4 @@ class Sample(Person):
 if __name__=='__main__':
     s = Sample('csv')
     print(s.email)
-    print(int('01'))
+    s.load_purchase_history()

@@ -29,7 +29,7 @@ PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-acces
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
                 'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v',
                 # 'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767',
-                'https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v',
+                #'https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v',
                 ]
 gmail=None
 QUIET_PERIOD=8
@@ -48,7 +48,6 @@ else:
 lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
 def alert(subject, msg, url):
-
     send_webhook(f'LV RESTOCK via {platform.system()} at {dt.datetime.now()}', url,
                  url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
     global gmail
@@ -68,8 +67,6 @@ def test_atc(product_url, identifier, skuId):
         print(f'tried to add {skuId} to cart but was unable to with status code {response.status_code}')
         return False
 
-
-
 def purchase(url):
     global lv_client
     try:
@@ -78,14 +75,15 @@ def purchase(url):
         if url not in targets:
             print('skipping purchase due to not high value targets')
             return
-        lv_client.atc(url)
+        status = lv_client.atc(url)
         lv_client.purchase()
         print('purchase successful, exiting')
         exit(0)
-
+    except LV_selenium.UnavailableException as e:
+        print('Item is unavailble')
     except:
-        traceback.print_exc()
         print(f"failed to purchase {url}")
+        lv_client.clean_up()
         del lv_client
         lv_client = LV_selenium.LV(driverpath,yi, headless=True)
 
@@ -125,15 +123,16 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    for i in range(60):
+    check_frequency=40
+    for i in range(600):
         start = dt.datetime.now()
         check()
         seconds_elapsed = (dt.datetime.now() - start).total_seconds()
-        if seconds_elapsed >= 60:
+        if seconds_elapsed >= check_frequency:
             print('skippng sleep')
             continue
         else:
-            sleep_time = int(60-seconds_elapsed)
+            sleep_time = int(check_frequency-seconds_elapsed)
             print(f'sleeping for {sleep_time}')
             sleep(sleep_time)
 

@@ -12,12 +12,15 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from util.decorators import *
+import platform
+import subprocess
+
 
 # import this variable when using the class Snkr
 Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
-AUTO_QUIT = True
+AUTO_QUIT = False
 MAX_RETRY=5
 
 
@@ -56,6 +59,20 @@ class Bot:
         self.verification_types={'xpath': By.XPATH}
         prints('finished init with', driver_path)
 
+    def clean_up(self):
+        try:
+            self.browser.close()
+            sleep(3)
+            self.browser.quit()
+            if platform.system() == "Windows":
+                stdout = subprocess.check_output("taskkill /im chromedriver.exe /f", shell=True).decode()
+                print(stdout)
+        except subprocess.CalledProcessError as grepexc:
+            if grepexc.returncode == 128:
+                print('no chromedriver proccess was running')
+            else:
+                print('failed to clean up chromedriver')
+                traceback.print_exc()
 
     def __del__(self):
         if AUTO_QUIT is True:
@@ -253,8 +270,9 @@ class Bot:
 
 # EXAMPLES:
 if __name__ == "__main__":
-    test=Bot('./chromedriver.exe')
-
+    test=Bot('../chromedriver.exe')
+    test.clean_up()
+    exit(0)
     # logger use example
     test.set_logger('logs.txt')
 

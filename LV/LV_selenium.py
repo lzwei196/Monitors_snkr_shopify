@@ -5,6 +5,7 @@ import platform
 from persons.yi import Yi
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException
 
 class UnavailableException(Exception):
     pass
@@ -20,6 +21,7 @@ class LV(Bot):
     def __init__(self, driver_path, person, headless=False):
         super(LV, self).__init__(driver_path, headless=headless)
         self.person=person
+        self.items=0
 
 
     def log_in(self):
@@ -104,24 +106,32 @@ class LV(Bot):
         v_view_cart = Verification(type='xpath', text='//*[contains(text(), "View my cart")]')
         v_proceed_1 = Verification(type='xpath', text='//*[@id="proceedToCheckoutButtonTop"]')
         v_continue_guest = Verification(type='xpath', text='//*[@id="continueWithoutLogging"]')
-        v_FirstName = self.v_FirstName
 
-        self.visit_site(product_url, v_atc)
-        atc_btn = self.find(verification=v_atc)
-        if atc_btn.text == 'Call for Availability':
-            print(f"WARNING: {product_url} atc button appears to say Call for Availability")
+
+        try:
+            self.visit_site(product_url, v_atc)
+            atc_btn = self.find(verification=v_atc)
+            if atc_btn.text == 'Call for Availability':
+                print(f"WARNING: {product_url} atc button appears to say Call for Availability")
+                raise UnavailableException
+
+            self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
+            view_vart_btn = self.find(verification=v_view_cart)
+            self.action(view_vart_btn.click, verification=v_proceed_1, action_name='view bag')
+            proceed_btn = self.find(verification=v_proceed_1)
+        except:
+            v_cfa = Verification(type='xpath',
+                                 text='//*[@class=""lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth -no-pointer""]')
+            cfa_btn = self.find(verification=v_atc)
+            print('Place to Cart not available, only have call for availability')
             raise UnavailableException
-
-        self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
-        view_vart_btn = self.find(verification=v_view_cart)
-        self.action(view_vart_btn.click, verification=v_proceed_1, action_name='view bag')
-        proceed_btn = self.find(verification=v_proceed_1)
 
         #todo catch this by
         self.action(proceed_btn.click, verification=v_continue_guest, action_name='proceed')
         self.log_in()
 
-    def purchase(self):
+
+    def purchase(self,):
         pick_up_btn=None
 
         #do pick up, or delivery when pick up is not available
