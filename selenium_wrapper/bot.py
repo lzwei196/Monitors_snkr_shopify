@@ -68,7 +68,7 @@ class Bot:
                 stdout = subprocess.check_output("taskkill /im chromedriver.exe /f", shell=True).decode()
                 print(stdout)
             else:
-                stdout = subprocess.check_output(f"sudo pkill -f {self.driver_path}", shell=True).decode()
+                stdout = subprocess.check_output(f"sudo pkill -f chrome", shell=True).decode()
                 print(stdout)
         except subprocess.CalledProcessError as grepexc:
             if grepexc.returncode == 128:
