@@ -167,7 +167,7 @@ class Bot:
             prints('timed out waiting for element %s to show up' % text)
             return False
         except Exception as e:
-            traceback.print_exc()
+            #traceback.print_exc()
             return False
 
     def generate_action_name(self, element, act):
@@ -190,7 +190,8 @@ class Bot:
         wait_time=3
         element = action.__self__
         if retries >MAX_RETRY:
-            traceback.print_exc()
+            #traceback.print_exc()
+            print(f'max retry of {action_name} has been exceeded, exiting')
             raise Exception
         if action_name is None:
             action_name = self.generate_action_name(element, action.__qualname__)
@@ -265,7 +266,7 @@ class Bot:
             else:
                 self.find(type=type, text=text, verification=verification, retries=retries+1)
         except Exception as e:
-            traceback.print_exc()
+            #traceback.print_exc()
             raise
 
 
