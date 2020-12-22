@@ -60,6 +60,7 @@ class Bot:
         prints('finished init with', driver_path)
 
     def clean_up(self):
+        print('CLEANING UP SELENIUM')
         try:
             self.browser.close()
             sleep(3)
