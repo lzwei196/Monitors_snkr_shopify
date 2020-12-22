@@ -19,7 +19,7 @@ GMAIL_LIST={'Katherine Nguyen': 'nhunga161@gmail.com',
             }
 
 ALERTED={}
-
+LV_selenium.AUTO_QUIT=True
 
 API_BASE='https://api.louisvuitton.com/api/eng-ca/catalog/availability/%s'
 
@@ -135,5 +135,5 @@ if __name__=='__main__':
             sleep_time = int(check_frequency-seconds_elapsed)
             print(f'sleeping for {sleep_time}')
             sleep(sleep_time)
-
+    lv_client.clean_up()
 

@@ -68,7 +68,8 @@ class Bot:
                 stdout = subprocess.check_output("taskkill /im chromedriver.exe /f", shell=True).decode()
                 print(stdout)
             else:
-                stdout = subprocess.check_output(f"sudo pkill -f chrome", shell=True).decode()
+                #this is specific to my setup, if u use ur linux host for other stuff u will need a better cleanup cmd
+                stdout = subprocess.check_output(f"sudo pkill -f chrome", shell=True).decode() #kill all chrome process
                 print(stdout)
         except subprocess.CalledProcessError as grepexc:
             if grepexc.returncode == 128:
@@ -79,9 +80,7 @@ class Bot:
 
     def __del__(self):
         if AUTO_QUIT is True:
-            self.browser.close()
-            sleep(3)
-            self.browser.quit()
+            self.clean_up()
 
     def press_key(self, key, verification=None, retries=0):
         if verification:

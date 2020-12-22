@@ -10,7 +10,6 @@ from selenium.common.exceptions import NoSuchElementException
 class UnavailableException(Exception):
     pass
 
-bot.AUTO_QUIT=False
 
 class LV(Bot):
     v_credit_card_num = Verification(type='xpath', text='//*[@id="creditCardNumber"]')
@@ -185,6 +184,7 @@ class LV(Bot):
 if __name__=='__main__':
     me = Yi('343')
     lv = LV('../chromedriver.exe',me, headless=True)
+    AUTO_QUIT = False
 
     #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
     lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
