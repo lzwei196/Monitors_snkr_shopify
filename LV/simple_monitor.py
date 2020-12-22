@@ -123,8 +123,10 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    check_frequency=40
-    for i in range(600):
+    check_frequency=30
+    loops = int(60 * 60 / check_frequency)
+    print(loops)
+    for i in range(loops):
         start = dt.datetime.now()
         check()
         seconds_elapsed = (dt.datetime.now() - start).total_seconds()
