@@ -1,3 +1,5 @@
 monitor.db
 shopifyWebhook.py
 proxy.json
+.idea/
+*.pyc
