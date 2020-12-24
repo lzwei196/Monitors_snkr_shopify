@@ -121,7 +121,7 @@ class LV(Bot):
         except:
             v_cfa = Verification(type='xpath',
                                  text='//*[@class=""lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth -no-pointer""]')
-            cfa_btn = self.find(verification=v_atc)
+            cfa_btn = self.find(verification=v_cfa)
             print('Place to Cart not available, only have call for availability')
             raise UnavailableException
 

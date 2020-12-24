@@ -123,7 +123,7 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    check_frequency=30 
+    check_frequency=30
     loops = int(60 * 60 / check_frequency) + 1
     print(loops)
     for i in range(loops):
