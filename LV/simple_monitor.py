@@ -75,7 +75,7 @@ def purchase(url):
         if url not in targets:
             print('skipping purchase due to not high value targets')
             return
-        status = lv_client.atc(url)
+        lv_client.atc(url)
         lv_client.purchase()
         print('purchase successful, exiting')
         exit(0)
@@ -123,8 +123,8 @@ def check():
                 print('out of stock')
 
 if __name__=='__main__':
-    check_frequency=30
-    loops = int(60 * 60 / check_frequency)
+    check_frequency=30 
+    loops = int(60 * 60 / check_frequency) + 1
     print(loops)
     for i in range(loops):
         start = dt.datetime.now()
