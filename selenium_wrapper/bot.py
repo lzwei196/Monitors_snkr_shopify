@@ -21,7 +21,7 @@ Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
 AUTO_QUIT = False
-MAX_RETRY=5
+MAX_RETRY=3
 
 
 def prints(*args):

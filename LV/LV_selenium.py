@@ -129,6 +129,9 @@ class LV(Bot):
         self.action(proceed_btn.click, verification=v_continue_guest, action_name='proceed')
         self.log_in()
 
+    def delivery(self):
+        v_delivery = Verification(type='xpath', text='//*[@id="id="standardShipping""]')
+        v_proceed = self.v_proceed
 
     def purchase(self,):
         pick_up_btn=None
@@ -156,34 +159,42 @@ class LV(Bot):
         v_credit_card_num = self.v_credit_card_num
         v_agree_to_terms = Verification(type='xpath', text='//*[@data-evt-content-id="terms_of_sales"]')
         v_submit_order = Verification(type='xpath', text='//*[@id="globalSubmitTop"]')
+        v_delivery = Verification(type='xpath', text='//*[@id="standardShipping"]')
+        v_select_address = Verification(type='xpath', text='//*[@id="selectAnAddress"]')
 
         # self.browser.execute_script(
         #     "fireEvent('proceedToBilling');startChain()")
-        # self.browser.execute_script(
-        #     "fireEvent('proceedToBilling');startChain()")
-        # self.browser.execute_script(
-        #     "fireEvent('proceedToBilling');startChain()")
-        proceed_btn = self.find(verification=v_proceed)
-        self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to billing')
+        try: #try do proceed to pickup, except: go to delivery
+            proceed_btn = self.find(verification=v_proceed)
+            self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to billing')
+        except:
+            devlivery_tab = self.find(verification=v_delivery)
+            self.action(devlivery_tab.click, verification=v_select_address, action_name='swithing to delivery')
+            proceed_btn = self.find(verification=v_proceed)
+            self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to billing')
+
         self.fill_credit_card()
+        # todo if this failes go to shipping
 
         proceed_btn = self.find(verification=v_proceed) #same id but should be on different page by now
         self.action(proceed_btn.click, verification=v_agree_to_terms, action_name='proceed to checkout')
 
+
+
         #submit_order
         agree_terms_btn = self.find(verification=v_agree_to_terms)
         self.action(agree_terms_btn.click, verification=v_submit_order, action_name='clicking agree to terms')
-        submit_order_btn = self.find(verification=v_submit_order)
-        self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
+        # submit_order_btn = self.find(verification=v_submit_order)
+        # self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
 
 
-        #todo check if pick_up_btn is not None, if its not None need to call self.enter_billing_info()
+
 
 
 
 if __name__=='__main__':
-    me = Yi('343')
-    lv = LV('../chromedriver.exe',me, headless=True)
+    me = Yi('926')
+    lv = LV('../chromedriver.exe',me, headless=False)
     AUTO_QUIT = False
 
     #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
