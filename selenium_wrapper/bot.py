@@ -23,6 +23,8 @@ VERBOSE = True
 AUTO_QUIT = True
 MAX_RETRY=3
 
+class MaxRetryExceeded(Exception):
+    pass
 
 def prints(*args):
     # overloading default print for this file so that you can turn off all prints with VERBOSE
@@ -193,7 +195,8 @@ class Bot:
         if retries >MAX_RETRY:
             #traceback.print_exc()
             print(f'max retry of {action_name} has been exceeded, exiting')
-            raise Exception
+            print('last know exception:', self.last_exception)
+            raise MaxRetryExceeded
         if action_name is None:
             action_name = self.generate_action_name(element, action.__qualname__)
         print(action_name)
@@ -201,15 +204,16 @@ class Bot:
         try:
             action(*args)
         except (ElementClickInterceptedException, ElementNotVisibleException, ElementNotInteractableException) as e:
-            #self.browser.fullscreen_window()
-            #self.scroll_to_element(element)
+            self.last_exception=e
             sleep(wait_time)
             return self.action(action,*args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries = retries +1)
         except (StaleElementReferenceException) as e:
+            self.last_exception = e
             sleep(wait_time)
             return self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
                                action_name=action_name,retries = retries +1)
         except Exception as e:
+            self.last_exception = e
             prints('failed perform %s' % action_name)
             error_msg = str(e)
             if 'Other element would receive the click' in error_msg:

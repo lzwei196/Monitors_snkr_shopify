@@ -31,6 +31,7 @@ xtx = args.xtx
 purchased=False
 TIMOUT=15
 
+
 class bestbuy(Requests_bot):
 
     @debug

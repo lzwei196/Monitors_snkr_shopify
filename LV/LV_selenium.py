@@ -5,7 +5,7 @@ import platform
 from persons.yi import Yi
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+import sys
 
 class UnavailableException(Exception):
     pass
@@ -129,13 +129,8 @@ class LV(Bot):
         self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
 
-    def delivery(self):
-        v_delivery = Verification(type='xpath', text='//*[@id="id="standardShipping""]')
-        v_proceed = self.v_proceed
-
     def purchase(self,):
         pick_up_btn=None
-
         #do pick up, or delivery when pick up is not available
         try:
             v_pickup = Verification(type='xpath', text='//*[@id="clickAndCollect"]')
@@ -179,8 +174,6 @@ class LV(Bot):
         proceed_btn = self.find(verification=v_proceed) #same id but should be on different page by now
         self.action(proceed_btn.click, verification=v_agree_to_terms, action_name='proceed to checkout')
 
-
-
         #submit_order
         agree_terms_btn = self.find(verification=v_agree_to_terms)
         self.action(agree_terms_btn.click, verification=v_submit_order, action_name='clicking agree to terms')
@@ -188,18 +181,14 @@ class LV(Bot):
         self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
 
 
-
-
-
-
 if __name__=='__main__':
-    me = Yi('926')
+    me = Yi(sys.argv[1])
     lv = LV('../chromedriver.exe',me, headless=False)
     AUTO_QUIT = False
 
     #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
-    lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
-    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
+    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+    lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
     lv.purchase()
 
     #taskkill /im chromedriver.exe /f
