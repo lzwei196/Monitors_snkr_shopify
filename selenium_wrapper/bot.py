@@ -85,6 +85,15 @@ class Bot:
         if AUTO_QUIT is True:
             self.clean_up()
 
+    def save_page(self, file):
+        print(f'saving page to {file}')
+        try:
+            with open(file, 'w+', encoding='utf-8') as fout:
+                fout.write(self.browser.page_source)
+        except:
+            print('failed to save page')
+            traceback.print_exc()
+
     def press_key(self, key, verification=None, retries=0):
         if verification:
             success = self.verify(verification)

@@ -183,12 +183,15 @@ class LV(Bot):
 
 if __name__=='__main__':
     me = Yi(sys.argv[1])
-    lv = LV('../chromedriver.exe',me, headless=False)
+    lv = LV('../chromedriver.exe',me, headless=True)
+    bot.AUTO_QUIT=False
     AUTO_QUIT = False
-
-    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
-    #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
-    lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
-    lv.purchase()
+    try:
+        #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
+        #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+        lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
+        lv.purchase()
+    except:
+        lv.save_page('test.html')
 
     #taskkill /im chromedriver.exe /f

@@ -43,7 +43,9 @@ email = "yaqixyzlancelot@gmail.com"
 yi = Yi(csv)
 if platform.system() == "Windows":
     driverpath = '../chromedriver.exe'
+    html_folder ='html/%s'
 else:
+    html_folder = '/tmp/LV_html/%s'
     driverpath = '/home/yyi/Documents/GitHub/Goodlife-class-booking/chromedriver'
 lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
@@ -82,6 +84,8 @@ def purchase(url):
     except LV_selenium.UnavailableException as e:
         print('Item is unavailble')
     except:
+        timestamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+        lv_client.save_page(html_folder % timestamp)
         print(f"failed to purchase {url}")
         lv_client.clean_up()
         del lv_client
