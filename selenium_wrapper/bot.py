@@ -20,7 +20,7 @@ import subprocess
 Verification = namedtuple('Verification', 'type text')
 INTERNAL_LOGGING = None
 VERBOSE = True
-AUTO_QUIT = False
+AUTO_QUIT = True
 MAX_RETRY=3
 
 

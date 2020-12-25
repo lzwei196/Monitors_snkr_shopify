@@ -28,7 +28,7 @@ class LV(Bot):
         v_acc_pwd = Verification(type='xpath', text='//*[@id="passwordloginForm"]')
         v_sign_in = Verification(type='xpath', text='//*[@id="loginSubmit_"]')
         v_proceed = self.v_proceed
-        v_credit_card_num = self.v_credit_card_num
+        # v_credit_card_num = self.v_credit_card_num
 
         acc_input = self.find(verification=v_acc)
         self.action(acc_input.send_keys, self.person.get_LV_acc().username, input_box_verification=True)
@@ -104,7 +104,7 @@ class LV(Bot):
         v_atc = Verification(type='xpath', text='//*[@class="lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth"]')
         v_view_cart = Verification(type='xpath', text='//*[contains(text(), "View my cart")]')
         v_proceed_1 = Verification(type='xpath', text='//*[@id="proceedToCheckoutButtonTop"]')
-        v_continue_guest = Verification(type='xpath', text='//*[@id="continueWithoutLogging"]')
+        v_sign_in = Verification(type='xpath', text='//*[@id="loginSubmit_"]')
 
 
         try:
@@ -126,7 +126,7 @@ class LV(Bot):
             raise UnavailableException
 
         #todo catch this by
-        self.action(proceed_btn.click, verification=v_continue_guest, action_name='proceed')
+        self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
 
     def delivery(self):
@@ -184,8 +184,8 @@ class LV(Bot):
         #submit_order
         agree_terms_btn = self.find(verification=v_agree_to_terms)
         self.action(agree_terms_btn.click, verification=v_submit_order, action_name='clicking agree to terms')
-        # submit_order_btn = self.find(verification=v_submit_order)
-        # self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
+        submit_order_btn = self.find(verification=v_submit_order)
+        self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
 
 
 
