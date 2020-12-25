@@ -76,7 +76,7 @@ class Bot:
             if grepexc.returncode == 128:
                 print('no chromedriver proccess was running')
             else:
-                print('failed to clean up chromedriver')
+                print(f'failed to clean up chromedriver {grepexc.returncode}')
                 traceback.print_exc()
 
     def __del__(self):
