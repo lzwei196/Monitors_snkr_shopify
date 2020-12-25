@@ -2,6 +2,8 @@ from selenium_wrapper.bot import *
 import requests
 from time import sleep
 
+AUTO_QUIT=True
+
 class Bestbuy(Bot):
     def __init__(self, driver_path, headless=False):
         super(Bestbuy, self).__init__(driver_path, headless=headless)

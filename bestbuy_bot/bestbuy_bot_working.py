@@ -10,6 +10,7 @@ import traceback
 import bestbuy_bot.args as args
 from util.decorators import *
 import util.decorators as decorators
+from util.request_bot import Requests_bot
 ########################### General param ##########################
 ####REPLACE the address, credit card info in the submit shipping, payment and order section
 #the cookie will be expired in an hour, haven't tested much, but this seems to be the case
@@ -28,12 +29,13 @@ sku = '10133041'
 xtx = args.xtx
 ####################################################################
 purchased=False
+TIMOUT=15
 
-
-class bestbuy():
+class bestbuy(Requests_bot):
 
     @debug
     def __init__(self,proxy=None, proxyornot=False, oneonly = True):
+        super(bestbuy, self).__init__(TIMEOUT=TIMOUT)
         self.oneonly = oneonly
         self.proxy = proxy
         self.session = HTMLSession()
@@ -75,8 +77,8 @@ class bestbuy():
         self.session.cookies.set('tx', xtx)
         for name, val in self.session.cookies.items():
             print(name, val)
-        response = self.session.get('https://www.bestbuy.ca/checkout/?qit=1')
-        print(response, response.text)
+        response = self.get('https://www.bestbuy.ca/checkout/?qit=1')
+
 
     @debug
     @exception_handler
@@ -86,9 +88,9 @@ class bestbuy():
         data["lineItems"][0]["sku"] = sku
         headers = args.atc_headers
         if self.proxyornot:
-            r = self.session.post(add_to_cart_url, data=json.dumps(data), headers=headers, proxies=self.proxy)
+            r = self.post(add_to_cart_url, data=json.dumps(data), headers=headers, proxies=self.proxy)
         else:
-            r = self.session.post(add_to_cart_url, data=json.dumps(data), headers=headers)
+            r = self.post(add_to_cart_url, data=json.dumps(data), headers=headers)
         print('############')
         print('adding' + sku + ' to cart')
         print(r.text)
@@ -109,8 +111,7 @@ class bestbuy():
     @debug
     def start_checkout(self):
         headers = args.atc_headers
-        r = self.session.get("https://www.bestbuy.ca/checkout/?qit=1#/en-ca/shipping/", headers=headers)
-        print(r.text)
+        r = self.get("https://www.bestbuy.ca/checkout/?qit=1#/en-ca/shipping/", headers=headers)
         print(self.session.cookies.get_dict())
 
     @debug
@@ -136,10 +137,9 @@ class bestbuy():
 
         timeout=self.timeout
         if self.proxyornot:
-            r = self.session.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies, timeout=timeout)
+            r = self.post(order_url, headers=shipping_headers, json=data, proxies=self.proxy, cookies=self.session.cookies)
         else:
-            r = self.session.post(order_url,headers=shipping_headers,json=data, cookies=self.session.cookies, timeout=timeout)
-        print(r.text)
+            r = self.post(order_url,headers=shipping_headers,json=data, cookies=self.session.cookies)
         id = json.loads(r.text)["id"]
         totalPurchasePrice = json.loads(r.text)["totalPurchasePrice"]
         return [id, totalPurchasePrice]
@@ -159,9 +159,9 @@ class bestbuy():
         headers=args.order_headers
         timeout = self.timeout
         if self.proxyornot:
-            r = self.session.put(url,headers=headers,json=data, proxies = self.proxy, cookies=self.session.cookies, timeout=timeout)
+            r = self.put(url,headers=headers,json=data, proxies = self.proxy, cookies=self.session.cookies)
         else:
-            r = self.session.put(url,headers=headers,json=data, cookies = self.session.cookies, timeout=timeout)
+            r = self.put(url,headers=headers,json=data, cookies = self.session.cookies)
         print(r.text)
 
     @debug
@@ -174,9 +174,9 @@ class bestbuy():
         data["id"] = id
         timeout=self.timeout
         if self.proxyornot:
-            r = self.session.post(url, headers=headers, json=data, proxies=self.proxy, cookies = self.session.cookies, timeout=timeout)
+            r = self.post(url, headers=headers, json=data, proxies=self.proxy, cookies = self.session.cookies)
         else:
-            r = self.session.post(url, headers=headers,json=data, cookies = self.session.cookies, timeout=timeout)
+            r = self.post(url, headers=headers,json=data, cookies = self.session.cookies)
         order_detail = json.loads(r.text)
         print('order detail', order_detail)
         if order_detail['orderNumber'] != 'null' and order_detail['orderNumber'] != None:

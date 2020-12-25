@@ -5,6 +5,7 @@ import time
 from pprint import  pprint
 import selenium_wrapper.selenium_support as ss
 from util.decorators import *
+from util.request_bot import Requests_bot
 #link for test
 #currently every single call that have been made during the checkout process are established
 #stucked at submit payment
@@ -24,10 +25,11 @@ header = {
     #'wm_qos.correlation_id': '4a005237-026-175a54ed043916,4a005237-026-175a54ed043fdb,4a005237-026-175a54ed043fdb'
 }
 
-
-class Walmart:
+TIMOUT=15
+class Walmart(Requests_bot):
     @debug
     def __init__(self):
+        super(Walmart, self).__init__(TIMEOUT=TIMOUT)
         self.session = HTMLSession()
         self.set_cookies()
         #exit(0)
@@ -58,14 +60,13 @@ class Walmart:
             #'wm_qos.correlation_id':'4a005237-026-175a54ed043916,4a005237-026-175a54ed043fdb,4a005237-026-175a54ed043fdb'
         }
         data = {"postalCode":"H3S2B2","items":[{"offerId":"6000201418464", "skuId":"6000201418464","quantity":1,"allowSubstitutions":True,"subscription":False,"action":"ADD","availabilityStoreId":"3165","pricingStoreId":"1170"}],"pricingStoreId":"1170"}
-        r = self.session.post(link, headers=header, json=data)
-        print(r.text)
+        r = self.post(link, headers=header, json=data)
 
     @debug
     def shipping(self):
         #self.pre_shipping()
         #initate checkout
-        r_start = self.session.get('https://www.walmart.ca/api/checkout-page/checkout?lang=en&availStoreId=3165&postalCode=H3G0E1', headers=header)
+        r_start = self.get('https://www.walmart.ca/api/checkout-page/checkout?lang=en&availStoreId=3165&postalCode=H3G0E1', headers=header)
         #links
         email_link = 'https://www.walmart.ca/api/checkout-page/checkout/email?availStore=3165&postalCode=H3G0E1'
         shipping_link = 'https://www.walmart.ca/api/checkout-page/checkout/address?lang=en&availStore=3165&slotBooked=false'
@@ -73,19 +74,19 @@ class Walmart:
         place_order = 'https://www.walmart.ca/api/checkout-page/checkout/place-order?lang=en&availStoreId=1061&postalCode=H3G0E1'
         ###########################################################
         email_data = {"emailAddress":email}
-        r_email = self.session.post(email_link, headers=header, json=email_data)
+        r_email = self.post(email_link, headers=header, json=email_data)
         print('email', r_email, r_email.text)
         shipping_data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":first,"lastName":last,"addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":None,"overrideAddressVerification":'false'}}
-        r_shipping = self.session.post(shipping_link,  json=shipping_data)
+        r_shipping = self.post(shipping_link,  json=shipping_data)
         print('shipping',r_shipping, r_shipping.text)
         price = r_email.json()['orderPriceInfo']["total"]
         #postal_data = '{"order":{"subTotal":147,"fulfillmentType":"SHIPTOHOME","isPOBoxAddress":false},"sellers":[{"sellerId":"0","itemTotal":147,"items":[{"skuId":"6000197280859","offerId":"6000197280859","quantity":1,"shipping":{"options":["STANDARD"],"type":"PARCEL","isShipAlone":false},"isDigitalItem":false,"isFreightItem":false}]}]}'
         #data = {"fulfillmentType":"SHIPTOHOME","deliveryInfo":{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G 0E1","phone":"4387258504","saveToProfile":'true',"country":"CA","locationId":'null',"overrideAddressVerification":'false'}}
         summary_data = {"orderTotal":price,"paymentMethods":[{"piHash":{"pan":"4520028185626631","cvv":"217","encryption":{"integrityCheck":"fcf90fff8e7d0c5e","phase":"1","keyId":"b73eb61c"}},"cardType":"CREDIT_CARD","pmId":"VISA","cardLast4Digits":"6631","referenceId":"pkeurr"}]}
-        r_summary = self.session.post(summary_link, json=summary_data)
+        r_summary = self.post(summary_link, json=summary_data)
         print(r_summary, r_summary.text)
         place_order_data = {"cvv":[{"credentialEncrypted":True,"paymentId":"f1e31d7c-9e93-4e8b-af46-69df45a508bf","voltageCredential":{"cypherTextCvv":"125","cypherTextPan":"4724094024082919","integrityCheck":"8abb4194ad94f7ea","keyId":"a2cd8300","phase":1}}],"ogInfo":{"ogSessionId":"af0a84f8847311e3b233bc764e1107f2.146933.1606956588","ogAutoship":False}}
-        r_place = self.session.post(place_order, json=place_order_data)
+        r_place = self.post(place_order, json=place_order_data)
         print(r_place, r_place.text)
 
 walmart = Walmart()
