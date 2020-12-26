@@ -55,7 +55,8 @@ class Bot:
         self.types={'class': self.browser.find_element_by_class_name,
                     'css':self.browser.find_element_by_css_selector,
                    'xpath': self.browser.find_element_by_xpath,
-                    'id': self.browser.find_element_by_id}
+                    'id': self.browser.find_element_by_id,
+                    'tagName': self.browser.find_element_by_tag_name}
         #simmilar idea as above
         # todo, incompleted list of By types
         self.verification_types={'xpath': By.XPATH}
@@ -85,11 +86,17 @@ class Bot:
         if AUTO_QUIT is True:
             self.clean_up()
 
-    def save_page(self, file):
+    def save_page(self, file, retries=0):
         print(f'saving page to {file}')
         try:
-            with open(file, 'w+', encoding='utf-8') as fout:
-                fout.write(self.browser.page_source)
+            html = self.browser.page_source
+            with open(file, 'w', encoding='utf-8') as fout:
+                if len(html) >8:
+                    fout.write(html)
+                else:
+                    print(f'page source empty, retrying {retries}')
+                    self.save_page(file, retries=retries+1)
+                    return
         except:
             print('failed to save page')
             traceback.print_exc()

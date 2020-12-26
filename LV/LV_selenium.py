@@ -185,7 +185,7 @@ if __name__=='__main__':
     me = Yi(sys.argv[1])
     lv = LV('../chromedriver.exe',me, headless=True)
     bot.AUTO_QUIT=False
-    AUTO_QUIT = False
+    lv.visit_site('http://bvgrth.blogspot.com/2018/08/selenium-is-unable-to-extract-page.html')
     try:
         #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
         #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')

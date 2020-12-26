@@ -83,7 +83,7 @@ def purchase(url):
     except LV_selenium.UnavailableException as e:
         print('Item is unavailble')
     except:
-        timestamp = dt.datetime.now().strftime("%Y-%m-%d %H:%M")
+        timestamp = dt.datetime.now().strftime("%Y-%m-%d-%H-%M")
         lv_client.save_page(html_folder % timestamp)
         print(f"failed to purchase {url}")
         lv_client.clean_up()
@@ -99,11 +99,9 @@ def check():
         api_endpoint = API_BASE % identifier
         response = session.get(api_endpoint)
         data = response.json()
-        #print(data)
         global gmail
         for availability in data['skuAvailability']:
             if availability['inStock'] == True:
-                # purchase(url)
                 print('restocked')
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"
