@@ -15,7 +15,7 @@ MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
                 'Jolin Lu': '100009501767563'}
 
 GMAIL_LIST={'Katherine Nguyen': 'nhunga161@gmail.com',
-                #'Jolin Lu': 'Jolin.luzhang@gmail.com',
+                'Jolin Lu': 'Jolin.luzhang@gmail.com',
             }
 
 ALERTED={}
@@ -29,7 +29,6 @@ PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-acces
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
                 'https://ca.louisvuitton.com/eng-ca/products/nice-nano-monogram-nvprod2320034v',
                 # 'https://ca.louisvuitton.com/eng-ca/products/toiletry-pouch-26-monogram-canvas-000767',
-                #'https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v',
                 ]
 gmail=None
 QUIET_PERIOD=8
@@ -43,20 +42,20 @@ email = "yaqixyzlancelot@gmail.com"
 yi = Yi(csv)
 if platform.system() == "Windows":
     driverpath = '../chromedriver.exe'
-    html_folder ='html/%s'
+    html_folder ='html/%s.html'
 else:
-    html_folder = '/tmp/LV_html/%s'
+    html_folder = '/tmp/LV_html/%s。html'
     driverpath = '/home/yyi/Documents/GitHub/Goodlife-class-booking/chromedriver'
 lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
 def alert(subject, msg, url):
     send_webhook(f'LV RESTOCK via {platform.system()} at {dt.datetime.now()}', url,
                  url='https://discord.com/api/webhooks/787083663581380629/6JQWwL9jTIZntx6OeukQNkmTS0WF6lPLbXPkXYtTrPPoZRJhWoputZTfsE0bdLKahWPI')
-    global gmail
-    if gmail is None:
-        gmail = Email(email, pwd)
-    for name, email_addr in GMAIL_LIST.items():
-        gmail.send_msg(email_addr, subject, msg)
+    # global gmail
+    # if gmail is None:
+    #     gmail = Email(email, pwd)
+    # for name, email_addr in GMAIL_LIST.items():
+    #     gmail.send_msg(email_addr, subject, msg)
 
 def test_atc(product_url, identifier, skuId):
     return True
@@ -94,17 +93,17 @@ def purchase(url):
 
 def check():
     global ALERTED
-    print(dt.datetime.now())
+    print(dt.datetime.now().strftime("%Y-%m-%d %H:%M"))
     for url in PRODUCT_URLS:
         identifier = url.split('-')[-1]
         api_endpoint = API_BASE % identifier
         response = session.get(api_endpoint)
         data = response.json()
-        print(data)
+        #print(data)
         global gmail
         for availability in data['skuAvailability']:
             if availability['inStock'] == True:
-                purchase(url)
+                # purchase(url)
                 print('restocked')
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"
@@ -122,9 +121,11 @@ def check():
                         print(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago")
                 else:
                     pass
+                purchase(url)
                 break
             else:
-                print('out of stock')
+                pass
+                # print('out of stock')
 
 if __name__=='__main__':
     check_frequency=30

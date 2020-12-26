@@ -1,10 +1,11 @@
 from pprint import pprint
 from selenium_wrapper.selenium_support import *
 import platform
+from LV.LV_main import LV_requests
 sample = {"addressInfo":[{"firstName":"ziwei","lastName":"li","addressLine1":"1510-1450 Boul René-Lévesque O","addressLine2":"","city":"Montréal","state":"QC","postalCode":"H3G0E1","phone":4387258504,"saveToProfile":True,"country":"CA","locationId":None,"overrideAddressVerification":False,"suggestedAddress":{"addressLine1":"1510-1450 boul René-Lévesque O","addressLine2":"","city":"MONTRÉAL","state":"QC","postalCode":"H3G 0E1","country":"CANADA","poBox":"","generalDelivery":"","routeService":"","buildingName":"Yul Tour 1","largeVolRecieverName":"","verificationLevel":"VERIFIED","addressType":"letterCarrier"}}]}
 
 
-sample2 = 'lvbmwe1=55AF2AF22430C80C2FE8EF1C1645450C; lv-dispatch=eng-ca; lvbmwe2=A3CCD2826076546410DC8A7F94574D3A; ATGID=anonymous; SGID=sb.springboot31-prd; storeLangCommerceHeader=eng-ca; ak_bmsc=E210B454A863082CE6188D6AF4088DFE173B9AC541750000FF8FD45FEF86033A~plPnw707/aPYjtts1pffimqOpukcLvO1HtR5jjUBo08TTbO5WDPwIWdJXssw3KVtmQukfvW/EtdeE3ESljJ6BdfI4fYgm/bcF5yMMhiRGaBuMk4V7FYI1MaEyqE4tctBOyJ0oTyrjlqmIuPm2zYXiLqJJUCu96unsWBqZnRIxX+03FnwE2FMfqP9xdwYOU4G31mHS9h1qb0COrnTvH5LgN4lrEQ+9tvu6DD/QwJdYh3HcFEhLR8qJ6Fb+wVHLY5ujltPtiNVGaI0CoAbMef3DbUg==; bm_sz=EE5344C00DC003C731F452B0263872A2~YAAQxZo7F0CWKJV1AQAAsn9SVgrykgH0kQZr7HmiYCqfhjoQT9ZXEl7NqgpN0QGsW6AOraD9D0RSn71423wucsROBD4p7UosxNEogmB535dH59r9BXoHeXJwD21RUwY9c4fk8CHqeI36aRI0KQRv+wao8ZYE0yGYwSL2uBNJLZq4w0hhK+bD94WrqNh/1fFs3bKxRAie; _dynSessConf=8538336961660798145; AKA_A2=A; ATG_SESSION_ID=4W8RUhH5-XpxX3pUSyljx7ji.front31-prd; JSESSIONID=4W8RUhH5-XpxX3pUSyljx7ji.front31-prd; lv-dispatch-url=https://ca.louisvuitton.com/eng-ca/products/game-on-classic-bikini-bottoms-nvprod2550060v#1A8LX4; order_CA="H4sIAAAAAAAAAKtWyi9KSS1SslLKqzAyNDA0NTEyNVSqBQAJQwc7FwAAAA=="; orderSize_CA=2; lvbmwe1=44C33110FCB654FA0883CCF8B50583C0; bm_mi=38F1CC2CE53F89CFFDFAE0CF68CCB64E~eV01UK+y7KTC5IWkJkCYnfg6QxxDChkt0OrjhYmGOOzjmeUccF4dykAEEUOsH3AcRkITKQG091gX3smhDKBRHTk75Krjhp05450OZHCjrNshxfjWHhkKcFeO4jt+wFNl40y0m2KJkiEke8mMVKOtUET4cbYXTO8sEGGvt0HUhPcCM+XWznoxXG3Z+3slZgE9Otk/61ROxGBbRDIT0yDlOtGU5NlLfhb8m2aS9PIyiKBer+Ymml/5hqmJPRacl6Ov; bm_sv=61558FDCB9A7EEB4BBE97DC30E317D06~XfQRMDRTn9b+5cJd40XUCCh2XFrGs7hS9oVrfXqprQkKJaErzw5e2lhvLoL3O2aCw8dCKnIJeTHhOQ8LJwxJK1NChD/as658A2R250Y7nqwXGgfX+6n6Ri3Ut3bWoKDulPYKyhrTcLCA0fUSdDGieSxeaSceEonqOzeUUDTCEIw=; _abck=82085626A5A176E110C0DBF9D25C9FF8~0~YAAQrJo7F90of6F1AQAA5y5nVgVkwp3j2iCS6oJyywrqMVAKFiBWah59cBb45x4B4g1BTwVHvSZZFoaZM0Qp/29nw1XqypqstOJsjZHwXMWLmGtTxqx1LAUQ177c5h/faXwz+CaSALIxXAVcdOSMMOHQenUEN2E/l6yUtq8BgI+zYUQ9IX3jTEZrxvQkutjqjrGCwqspoHth0KisigHnjW+ecI1xuxJqOeQPK6oQ+a2mQfJgJk7rXUxFppDHQC/JN56Ol+JzGJPmkWEXlm/rq587uJzUYWh1ntUg1O8UJ3TnuX239yGT4m03q/T0guRkWgxoSqcA+ALtwdCKxC8uOMQ66IQC5BdGocWulg==~-1~-1~-1; prevURL=https://secure.louisvuitton.com/eng-ca/checkout/shipping; currentURL=https://secure.louisvuitton.com/eng-ca/cart; ak_wfSession=1607769171~id=DIF+IYTNwGaMJOf/tq5+9c6rfK0DJh+4fcJ2TUkyLN4='
+sample2 = 'lv-dispatch=eng-ca; ak_cc=CA; lvbmwe2=A3CCD2826076546410DC8A7F94574D3A; SGID=sb.springboot31-prd; SGID=.springboot31-prd; storeLangCommerceHeader=eng-ca; geolocUserZone=noZone; bm_sz=A2FA6315668EED20E59D307D6194CAD2~YAAQ1WIjFwRrEHp2AQAAQQZhlwpsJljDahy6nc9oKGz5TFwhVFUVQ1vZY0Istg0SXtao5LGCeHzUuf5CC4x6YsUQyW8LroYuep1Z9+6/T2stqjoXQIWQ0e8Lvp4t3fSXpIsM6/qarXZ+wvUn42QVkZ+/F6fzGlS3c+/FOYaKGYhQ2zYNbIM5/jzKLsxuPyTWGCOk9rAd; order_CA="H4sIAAAAAAAAAKtWyi9KSS1SslLKqzAyMjQ1M7E0MFOqBQCIL6g3FwAAAA=="; orderSize_CA=2; bm_mi=3B58C1B4A8CDA15F7D4EC061213EC618~jpT2Ak0wXAD4i/VEiKvyTIbbJO5rV5IVp/nDkD0WPNAxCz6aY+x1PIS+OjV4LQAmmZsIQOY2fscuY3Itg2at9/IWhCNhr4GE5pcYnZL+4zNE7Ak0gG3smzMrGc1+tApQeDjKoOgifMUUzMcngDiaAivVMKwH/OfupnGJXecPV4V3Xep3+Ct500PUS0Bl1vCPFUrSOQegu0pSDJaSSzyiVN35aOVPCPOQr4ZZV+MyoJkv1Ry0kqsF6Ocqk5YQEoC+XMGRx9QqNU0Erc6D7D3JwB50u5Y7qh4szz98o/WekubW0/SGgikmn8xAYogfbMB+; bm_sv=2D8D81F4CFE6AAFF4FF3728D30683991~xMMG/lwFiHU+xsw6xv39LFptFYOKO6Kr7MhJJwxZCXxEH6qhExNbk6dzR2+mm21QKy7UGAKz9+b7FG1pBUWY0/ZW8mcJfHGXK5lrcvJcyG3aulrrwZ/gQDPzsgSgKx4L1o4/r+zMQOGl1d0vnvsin5/hz0v+6w+fcJyZWWb9eg8=; ak_bmsc=491858A1110419F1CF9AC60E6A327957172362D54F4C00008E37E55FE8D9352B~pl7bSVwBHRoUVLHG2h7c2x2F458C7rJptl64G1OFv33zpszHGjYWs4Wtp5REFYWMh0s4bXLYM2vbvH8lFitRHjmfH4I/boMxXCGkmxIg18tIiqtVN3resfU2Mdh2sq0lI+vkJxN6UVm0JXRFKTAVQ5jVjsKjwsuMeiJlUj17I/cD+6ifDBR9gNl6Nc/LsT/RAmIRjhXI9zWSYE3+kOM7MwKGbffjQymQEEZqQENiT37b4PwLVjOXRwWs7l/U3MpcMwcRy0zXrfjA5dZplFOUtXW1mpiih8P7adzUS3D/BfP+qEPa12CNf47UVHvvxH5ptuduox/sPwSlqhy8sJ/JdM2Q==; currentURL=https://secure.louisvuitton.com/eng-ca/mylv/overview; _abck=EF55B91199A7B7806FAA610A6E52FC97~0~YAAQrJo7F4l8g6F1AQAAE9hzlwXyPrP9tHMMR7ad0qLF67UI11loIOvIduxY9QRIKjmzPKBDA24b8JOvIW/FyARqr0kD1kqoy/3ziMbSA+I5MyiE2iBKfVyC0c/LiDphh2zct1/mrkx46cHubVZlnUlgyEN9nLj/Xn5D/qWBWt5KheVSM8c4J3Rhsqq5bBJ/Ld1D9ULrT7x7GhdfiLq3RWRvft6TfyinCZk0eE/8DypRseYDFrxkU9vQzvnuU7Uq1Se2zVeX5l5oY9zRGE1aEde1vv12r3Lbumx8+wi1bap8ghI/Ynt24EH+4YIGgTjNk+O/chUjrhZWR/My8OZc38RGq+rLEACUbBqxEA==~-1~||-1||~-1; ATG_SESSION_ID=yPAJeGkoVyeuFeXxg-L2Witt.front31-prd; ATGID=anonymous; prevURL=https://secure.louisvuitton.com/eng-ca/mylv/overview; lvbmwe1=DF501ACF088A750B341ADFE55EF4BCA1; lv-dispatch-url=https://ca.louisvuitton.com/eng-ca/homepage; _dynSessConf=-3957170385872747029; JSESSIONID=aJ8Qmq1kcNS-fR51WHiLwfm4.front31-prd'
 def func(json):
     for k, v in json.items():
         if type(v) == ''.__class__:
@@ -23,11 +24,19 @@ def cookie_format(string):
         cookies[item[0]]=item[1]
     return cookies
 
-# pprint(cookie_format(sample2))
+cookie1 = cookie_format(sample2)
 
-print(platform.system())
+bot = LV_requests()
+bot.set_cookies()
 
+cookies = bot.session.cookies
 
+for name, val in cookies.items():
+    #print(cookie['name'], cookie['value'])
+    if name in cookie1:
+        print('deleted a cookie')
+        del cookie1[name]
 
+pprint(cookie1)
 
 
