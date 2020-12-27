@@ -49,6 +49,7 @@ class Bot:
         self.browser.execute_cdp_cmd('Network.setUserAgentOverride', {"userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.53 Safari/537.36'})
         self.browser.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
 
+        self.headless=headless
         self.driver_path = driver_path
         # store functions in dictionaries so we can make our own find functions with error handling and logs
         # todo, incompleted list of functions
@@ -83,7 +84,7 @@ class Bot:
                 traceback.print_exc()
 
     def __del__(self):
-        if AUTO_QUIT is True:
+        if AUTO_QUIT is True or self.headless is True:
             self.clean_up()
 
     def save_page(self, file, retries=0):
@@ -95,6 +96,7 @@ class Bot:
                     fout.write(html)
                 else:
                     print(f'page source empty, retrying {retries}')
+                    sleep(2)
                     self.save_page(file, retries=retries+1)
                     return
         except:

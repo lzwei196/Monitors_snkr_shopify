@@ -44,7 +44,7 @@ if platform.system() == "Windows":
     driverpath = '../chromedriver.exe'
     html_folder ='html/%s.html'
 else:
-    html_folder = '/tmp/LV_html/%s。html'
+    html_folder = '/tmp/LV_html/%s.html'
     driverpath = '/home/yyi/Documents/GitHub/Goodlife-class-booking/chromedriver'
 lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
@@ -126,19 +126,23 @@ def check():
                 # print('out of stock')
 
 if __name__=='__main__':
-    check_frequency=30
-    loops = int(60 * 60 / check_frequency) + 1
-    print(loops)
-    for i in range(loops):
-        start = dt.datetime.now()
-        check()
-        seconds_elapsed = (dt.datetime.now() - start).total_seconds()
-        if seconds_elapsed >= check_frequency:
-            print('skippng sleep')
-            continue
-        else:
-            sleep_time = int(check_frequency-seconds_elapsed)
-            print(f'sleeping for {sleep_time}')
-            sleep(sleep_time)
-    lv_client.clean_up()
+    try:
+        check_frequency=30
+        loops = int(60 * 60 / check_frequency) + 1
+        print(loops)
+        for i in range(loops):
+            start = dt.datetime.now()
+            check()
+            seconds_elapsed = (dt.datetime.now() - start).total_seconds()
+            if seconds_elapsed >= check_frequency:
+                print('skippng sleep')
+                continue
+            else:
+                sleep_time = int(check_frequency-seconds_elapsed)
+                print(f'sleeping for {sleep_time}')
+                sleep(sleep_time)
+    except:
+        traceback.print_exc()
+    finally:
+        lv_client.clean_up()
 
