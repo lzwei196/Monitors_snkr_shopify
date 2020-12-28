@@ -105,7 +105,9 @@ class LV(Bot):
         v_view_cart = Verification(type='xpath', text='//*[contains(text(), "View my cart")]')
         v_proceed_1 = Verification(type='xpath', text='//*[@id="proceedToCheckoutButtonTop"]')
         v_sign_in = Verification(type='xpath', text='//*[@id="loginSubmit_"]')
-
+        v_cfa = Verification(type='xpath',
+                             text='//*[@class=""lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth -no-pointer""]')
+        v_out_of_stock = Verification(type='xpath', text='//*[@id="lv-product-add-to-cart__error"]')
 
         try:
             self.visit_site(product_url, v_atc)
@@ -119,12 +121,14 @@ class LV(Bot):
             self.action(view_vart_btn.click, verification=v_proceed_1, action_name='view bag')
             proceed_btn = self.find(verification=v_proceed_1)
         except:
-            v_cfa = Verification(type='xpath',
-                                 text='//*[@class=""lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth -no-pointer""]')
-            cfa_btn = self.find(verification=v_cfa)
-            print('Place to Cart not available, only have call for availability')
-            raise UnavailableException
-
+            try:
+                cfa_btn = self.find(verification=v_cfa)
+                print(f'Place to Cart not available, only have {cfa_btn.text}"')
+            except:
+                oos_btn = self.find(verification=v_out_of_stock)
+                print(f'Place to cart resulted in {oos_btn.text}')
+            finally:
+                raise UnavailableException
         #todo catch this by
         self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
