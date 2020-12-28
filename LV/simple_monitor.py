@@ -83,10 +83,11 @@ def purchase(url):
     except LV_selenium.UnavailableException as e:
         print('Item is unavailble')
     except:
+        print('unknow error')
+    finally:
         timestamp = dt.datetime.now().strftime("%Y-%m-%d-%H-%M")
         lv_client.save_page(html_folder % timestamp)
         print(f"failed to purchase {url}")
-    finally:
         lv_client.clean_up()
         del lv_client
         lv_client = LV_selenium.LV(driverpath,yi, headless=True)
