@@ -77,7 +77,7 @@ class Bot:
                 stdout = subprocess.check_output(f"pkill -f chrome", shell=True).decode() #kill all chrome process
                 print(stdout)
         except subprocess.CalledProcessError as grepexc:
-            if grepexc.returncode == 128:
+            if grepexc.returncode in [128, -15]:
                 print('no chromedriver proccess was running')
             else:
                 print(f'failed to clean up chromedriver {grepexc.returncode}')
