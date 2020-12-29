@@ -1,5 +1,5 @@
-monitor.db
-shopifyWebhook.py
-proxy.json
+others/monitor.db
+others/shopifyWebhook.py
+others/proxy.json
 .idea/
 *.pyc

@@ -1,0 +1,19 @@
+node('master'){
+
+    sh "ls -lat"
+    stage('Checkout'){
+        sh 'ls -la'
+
+        git branch: '04_06',
+        url: 'https://github.com/lzwei196/Monitors_snkr_shopify.git',
+        credentialsId: 'github_wuarthur'
+
+        sh "ls -lat"
+        sh """
+            export PYTHONPATH=.
+            python3 LV/simple_monitor.py YaQiloveandhate 926
+
+        """
+    }
+
+}
