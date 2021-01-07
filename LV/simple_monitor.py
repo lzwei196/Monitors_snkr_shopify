@@ -72,7 +72,8 @@ def purchase(url):
     global lv_client
     try:
         targets=['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
-                    'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575']
+                'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
+                'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656']
         if url not in targets:
             print('skipping purchase due to not high value targets')
             return
