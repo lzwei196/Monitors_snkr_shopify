@@ -44,7 +44,7 @@ if platform.system() == "Windows":
     driverpath = '../chromedriver.exe'
     html_folder ='html/%s.html'
 else:
-    html_folder = '/tmp/LV_html/%s.html'
+    html_folder = '/LV_html/%s.html'
     driverpath = '/home/yyi/Documents/GitHub/Goodlife-class-booking/chromedriver'
 lv_client=LV_selenium.LV(driverpath,yi, headless=True)
 
