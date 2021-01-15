@@ -88,7 +88,8 @@ def purchase(url):
     finally:
         timestamp = dt.datetime.now().strftime("%Y-%m-%d-%H-%M")
         lv_client.save_page(html_folder % timestamp)
-        print(f"failed to purchase {url}")
+        errors = lv_client.get_errors()
+        print(f"failed to purchase {url}, caught errors: {errors}")
         lv_client.clean_up()
         del lv_client
         lv_client = LV_selenium.LV(driverpath,yi, headless=True)

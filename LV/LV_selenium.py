@@ -22,6 +22,13 @@ class LV(Bot):
         self.person=person
         self.items=0
 
+    def get_errors(self):
+        error_list={'This product is out of stock': 'out of stock'}
+        html = self.browser.page_source
+        for key, val in error_list.items():
+            if key in html:
+                return f'{val}, FULL ELEMENT: {html[html.index(key)-15:html.index(key)+len(key)+15]}'
+
 
     def log_in(self):
         v_acc = Verification(type='xpath', text='//*[@id="loginloginForm"]')

@@ -95,11 +95,11 @@ class Bot:
             with open(file, 'w', encoding='utf-8') as fout:
                 if len(html) >8:
                     fout.write(html)
+                    return html
                 else:
                     print(f'page source empty, retrying {retries}')
                     sleep(2)
-                    self.save_page(file, retries=retries+1)
-                    return
+                    return self.save_page(file, retries=retries+1)
         except:
             print('failed to save page')
             traceback.print_exc()
@@ -246,6 +246,7 @@ class Bot:
                 raise
 
         if verification:
+            # todo add a fail element (where if the element is found return fail right away)
             success = self.verify(verification)
             if success:
                 prints('successfully performed %s' % action_name)
