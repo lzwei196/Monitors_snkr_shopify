@@ -37,6 +37,7 @@ def prints(*args):
 
 class Bot:
 
+    @timer
     def __init__(self, driver_path, headless=False):
         # set the brower object and find function types
         options = Options()
@@ -204,7 +205,7 @@ class Bot:
         except:
             return '%s on %s' % (act, 'unknown element')
 
-
+    @timer
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
         print('URL:', self.browser.current_url)
@@ -267,7 +268,7 @@ class Bot:
             else:
                 prints('successfully performed %s' % action_name)
                 return True
-
+    @timer
     def find(self,type=None, text=None, verification=None, retries=0):
         # if verification is given, type and text param wont be used
         # return: Bool, Selenium Element.
