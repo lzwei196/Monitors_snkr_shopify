@@ -1,7 +1,10 @@
+
+timeout(70){
 node('master'){
 
     sh "ls -lat"
     stage('Checkout'){
+        ansiColor('xterm') {
         sh 'ls -la'
 
         git branch: '04_06',
@@ -14,6 +17,9 @@ node('master'){
             python3 LV/simple_monitor.py YaQiloveandhate 926
 
         """
+
+        }
     }
 
+}
 }

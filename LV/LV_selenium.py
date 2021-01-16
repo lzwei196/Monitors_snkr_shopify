@@ -136,7 +136,7 @@ class LV(Bot):
                 print(f'Place to cart resulted in {oos_btn.text}')
             finally:
                 raise UnavailableException
-        #todo catch this by
+
         self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
 
@@ -178,9 +178,9 @@ class LV(Bot):
             self.action(devlivery_tab.click, verification=v_select_address, action_name='swithing to delivery')
             proceed_btn = self.find(verification=v_proceed)
             self.action(proceed_btn.click, verification=v_credit_card_num, action_name='proceed to billing')
+            #todo check for product out of stock element
 
         self.fill_credit_card()
-        # todo if this failes go to shipping
 
         proceed_btn = self.find(verification=v_proceed) #same id but should be on different page by now
         self.action(proceed_btn.click, verification=v_agree_to_terms, action_name='proceed to checkout')

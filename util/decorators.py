@@ -12,8 +12,9 @@ def timer(f):
 
         # print ('func:%r args:[%r, %r] took: %2.4f sec' % \
         #   (f.__name__, args, kw, te-ts))
-        print ('func:%r took: %2.4f sec' % \
-          (f.__name__, te-ts))
+        msg = 'func:%r took: %2.4f sec' % \
+          (f.__name__, te-ts)
+        print(f'\033[35m{msg}\033[0m')
         return result
     return timed
 
