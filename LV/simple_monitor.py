@@ -9,6 +9,7 @@ import datetime as dt
 from LV import LV_main, LV_selenium
 import traceback
 from persons.yi import *
+from util.ansi_colour import *
 
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
@@ -33,7 +34,7 @@ PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-acces
 gmail=None
 QUIET_PERIOD=8
 if len(sys.argv) < 2:
-    print('please pass in pwd as param')
+    print(red('please pass in pwd as param'))
     exit(0)
 
 pwd=sys.argv[1]
@@ -75,22 +76,22 @@ def purchase(url):
                 'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656']
         if url not in targets:
-            print('skipping purchase due to not high value targets')
+            print(green('skipping purchase due to not high value targets'))
             return
         lv_client.atc(url)
         lv_client.purchase()
-        print('purchase successful, exiting')
+        print(green('purchase successful, exiting'))
         exit(0)
     except LV_selenium.UnavailableException as e:
-        print('Item is unavailble')
+        print(red('Item is unavailble'))
     except:
-        print('unknow error')
+        print(red('unknow error'))
     finally:
         timestamp = dt.datetime.now().strftime("%Y-%m-%d-%H-%M")
         lv_client.save_page(html_folder % timestamp)
         errors = lv_client.get_errors()
         msg = f"failed to purchase {url}, caught errors: {errors}"
-        print(f'\033[35m{msg}\033[0m')
+        print(magenta(msg))
         lv_client.clean_up()
         del lv_client
         lv_client = LV_selenium.LV(driverpath,yi, headless=True)
@@ -107,10 +108,9 @@ def check():
         global gmail
         for availability in data['skuAvailability']:
             if availability['inStock'] == True:
-                print('restocked')
                 msg = f'THE FOLLOWING PRODUCT HAS RESTOCKED -> {url}'
                 subject = "LV RESTOCK ALERT"
-                print(msg)
+                print(green(msg))
                 atc_allowed = test_atc(url, identifier, availability['skuId'])
                 if url not in ALERTED and atc_allowed:
                     ALERTED[url]=dt.datetime.now()
@@ -121,7 +121,7 @@ def check():
                         ALERTED[url] = dt.datetime.now()
                         alert(subject, msg, url)
                     else:
-                        print(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago")
+                        print(green(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago"))
                 else:
                     pass
                 purchase(url)
@@ -150,4 +150,6 @@ if __name__=='__main__':
         traceback.print_exc()
     finally:
         lv_client.clean_up()
+
+        ##todo summery table
 

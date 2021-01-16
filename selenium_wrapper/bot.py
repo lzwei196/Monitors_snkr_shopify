@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.options import Options
 from util.decorators import *
 import platform
 import subprocess
-
+import urllib3
 
 # import this variable when using the class Snkr
 Verification = namedtuple('Verification', 'type text')
@@ -82,7 +82,9 @@ class Bot:
                 print('no chromedriver proccess was running')
             else:
                 print(f'failed to clean up chromedriver {grepexc.returncode}')
-                traceback.print_exc()
+                #traceback.print_exc()
+        except urllib3.exceptions.MaxRetryError as e:
+            print('an attemt shutdown chromedriver when it is already closed')
 
     def __del__(self):
         if AUTO_QUIT is True or self.headless is True:

@@ -6,6 +6,7 @@ from persons.yi import Yi
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
 import sys
+from util.ansi_colour import *
 
 class UnavailableException(Exception):
     pass
@@ -120,7 +121,7 @@ class LV(Bot):
             self.visit_site(product_url, v_atc)
             atc_btn = self.find(verification=v_atc)
             if atc_btn.text == 'Call for Availability':
-                print(f"WARNING: {product_url} atc button appears to say Call for Availability")
+                print(magenta(f"WARNING: {product_url} atc button appears to say Call for Availability"))
                 raise UnavailableException
 
             self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
@@ -130,10 +131,10 @@ class LV(Bot):
         except:
             try:
                 cfa_btn = self.find(verification=v_cfa)
-                print(f'Place to Cart not available, only have {cfa_btn.text}"')
+                print(magenta(f'Place to Cart not available, only have {cfa_btn.text}"'))
             except:
                 oos_btn = self.find(verification=v_out_of_stock)
-                print(f'Place to cart resulted in {oos_btn.text}')
+                print(magenta(f'Place to cart resulted in {oos_btn.text}'))
             finally:
                 raise UnavailableException
 
@@ -147,7 +148,7 @@ class LV(Bot):
             v_pickup = Verification(type='xpath', text='//*[@id="clickAndCollect"]')
             pick_up_btn = self.find(verification=v_pickup)
         except:
-            print('collect in store not available, doing delivery instead')
+            print(magenta('collect in store not available, doing delivery instead'))
 
         if pick_up_btn is None:
             pass
@@ -156,7 +157,7 @@ class LV(Bot):
             # self.enter_billing_info()
         else:
             sleep(5)
-            print('slight wait before collecting in store')
+            print(blue('slight wait before collecting in store'))
             self.choose_pickup_location(pick_up_btn)
             pick_up_btn=True
 
