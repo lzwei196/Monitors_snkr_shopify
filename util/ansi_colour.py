@@ -21,3 +21,4 @@ def test(msg):
 
 if __name__ =='__main__':
     print(yellow('msg'))
+    print(int(input("Enter the inputs : ") or "42"))

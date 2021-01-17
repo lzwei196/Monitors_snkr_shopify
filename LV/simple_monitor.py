@@ -85,7 +85,7 @@ def purchase(url):
         print(green('purchase successful, exiting'))
         exit(0)
     except LV_selenium.UnavailableException as e:
-        print(red('Item is unavailble'))
+        print(f'{red("Item is unavailble")}: {e}')
     except:
         print(red('unknow error'))
     finally:
@@ -95,9 +95,6 @@ def purchase(url):
         msg = f"failed to purchase {url}, caught errors: {errors}"
         print(magenta(msg))
         lv_client.restart()
-        # lv_client.clean_up()
-        # del lv_client
-        # lv_client = LV_selenium.LV(driverpath,yi, headless=True)
 
 
 def check():

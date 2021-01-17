@@ -10,8 +10,8 @@ from util.ansi_colour import *
 
 
 class UnavailableException(Exception):
-    pass
-
+    def __init__(self, msg):
+        super().__init__(msg)
 
 class LV(Bot):
     v_credit_card_num = Verification(type='xpath', text='//*[@id="creditCardNumber"]')
@@ -123,8 +123,7 @@ class LV(Bot):
             self.visit_site(product_url, v_atc)
             atc_btn = self.find(verification=v_atc)
             if atc_btn.text == 'Call for Availability':
-                print(magenta(f"WARNING: {product_url} atc button appears to say Call for Availability"))
-                raise UnavailableException
+                raise UnavailableException(magenta(f"WARNING: {product_url} atc button appears to say Call for Availability"))
 
             self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
             view_vart_btn = self.find(verification=v_view_cart)
@@ -132,13 +131,14 @@ class LV(Bot):
             proceed_btn = self.find(verification=v_proceed_1)
         except:
             try:
+                msg = magenta(f'Place to Cart not available.....')
                 cfa_btn = self.find(verification=v_cfa)
-                print(magenta(f'Place to Cart not available, only have {cfa_btn.text}"'))
+                msg = magenta(f'Place to Cart not available, only have {cfa_btn.text}"')
             except:
                 oos_btn = self.find(verification=v_out_of_stock)
-                print(magenta(f'Place to cart resulted in {oos_btn.text}'))
+                msg = magenta(f'Place to cart resulted in {oos_btn.text}')
             finally:
-                raise UnavailableException
+                raise UnavailableException(msg)
 
         self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
@@ -196,6 +196,9 @@ class LV(Bot):
 
 
 if __name__=='__main__':
+    # e = UnavailableException(magenta(f'Place to cart resulted in '))
+    # print(f'{e}:')
+    # exit(0)
     me = Yi(sys.argv[1])
     lv = LV('../chromedriver.exe',me, headless=True)
     bot.AUTO_QUIT=True
