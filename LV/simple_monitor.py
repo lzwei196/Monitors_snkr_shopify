@@ -25,12 +25,8 @@ LV_selenium.AUTO_QUIT=True
 API_BASE='https://api.louisvuitton.com/api/eng-ca/catalog/availability/%s'
 
 session = Requests_bot(silent=True)
-import requests.exceptions
-import urllib3.exceptions
-session.add_exception(requests.exceptions.ConnectionError)
-session.add_exception(urllib3.exceptions.MaxRetryError)
-session.add_exception(urllib3.exceptions.NewConnectionError)
-session.add_exception(ConnectionAbortedError)
+session.ignore_VPN_exceptions()
+
 PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
                 'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
