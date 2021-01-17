@@ -1,6 +1,7 @@
 import time
 import traceback
 import requests
+from util.ansi_colour import *
 
 debug_mode=True
 
@@ -14,7 +15,7 @@ def timer(f):
         #   (f.__name__, args, kw, te-ts))
         msg = 'func:%r took: %2.4f sec' % \
           (f.__name__, te-ts)
-        print(f'\033[35m{msg}\033[0m')
+        print(bright_blue(msg))
         return result
     return timed
 

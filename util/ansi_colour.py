@@ -16,9 +16,12 @@ def blue(msg):
 def cyan(msg):
     return f'\033[36m{msg}\033[0m'
 
+def bright_blue(msg):
+    return f'\033[94m{msg}\033[0m'
+
 def test(msg):
-    return f'\033[91m{msg}\033[0m'
+    return f'\033[94m{msg}\033[0m'
 
 if __name__ =='__main__':
-    print(yellow('msg'))
-    print(int(input("Enter the inputs : ") or "42"))
+    print(test('msg'))
+    print(red('msg'))
