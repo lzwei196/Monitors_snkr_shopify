@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 from util.ansi_colour import *
 
+
 class UnavailableException(Exception):
     pass
 

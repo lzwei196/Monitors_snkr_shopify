@@ -15,3 +15,9 @@ def blue(msg):
 
 def cyan(msg):
     return f'\033[36m{msg}\033[0m'
+
+def test(msg):
+    return f'\033[91m{msg}\033[0m'
+
+if __name__ =='__main__':
+    print(yellow('msg'))

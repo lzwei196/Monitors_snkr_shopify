@@ -1,4 +1,3 @@
-from requests_html import HTMLSession
 import sys
 import platform
 from notifications.messenger import Messenger
@@ -10,6 +9,7 @@ from LV import LV_main, LV_selenium
 import traceback
 from persons.yi import *
 from util.ansi_colour import *
+from util.request_bot import Requests_bot
 
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
@@ -24,7 +24,13 @@ LV_selenium.AUTO_QUIT=True
 
 API_BASE='https://api.louisvuitton.com/api/eng-ca/catalog/availability/%s'
 
-session = HTMLSession()
+session = Requests_bot(silent=True)
+import requests.exceptions
+import urllib3.exceptions
+session.add_exception(requests.exceptions.ConnectionError)
+session.add_exception(urllib3.exceptions.MaxRetryError)
+session.add_exception(urllib3.exceptions.NewConnectionError)
+session.add_exception(ConnectionAbortedError)
 PRODUCT_URLS = ['https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025',
                 'https://ca.louisvuitton.com/eng-ca/products/nano-speedy-monogram-010575',
                 'https://ca.louisvuitton.com/eng-ca/products/pochette-accessoires-monogram-005656',
@@ -122,7 +128,7 @@ def check():
                         ALERTED[url] = dt.datetime.now()
                         alert(subject, msg, url)
                     else:
-                        print(green(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago"))
+                        print(f"SKIPPING ALERT BECAUSE LAST ONE WAS SENT UNDER {minutes_diff} mins ago")
                 else:
                     pass
                 purchase(url)
@@ -141,7 +147,7 @@ if __name__=='__main__':
             check()
             seconds_elapsed = (dt.datetime.now() - start).total_seconds()
             if seconds_elapsed >= check_frequency:
-                print('skippng sleep')
+                #print('skippng sleep')
                 continue
             else:
                 sleep_time = int(check_frequency-seconds_elapsed)
