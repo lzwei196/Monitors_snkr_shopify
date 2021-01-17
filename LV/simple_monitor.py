@@ -92,9 +92,10 @@ def purchase(url):
         errors = lv_client.get_errors()
         msg = f"failed to purchase {url}, caught errors: {errors}"
         print(magenta(msg))
-        lv_client.clean_up()
-        del lv_client
-        lv_client = LV_selenium.LV(driverpath,yi, headless=True)
+        lv_client.restart()
+        # lv_client.clean_up()
+        # del lv_client
+        # lv_client = LV_selenium.LV(driverpath,yi, headless=True)
 
 
 def check():
@@ -134,7 +135,7 @@ if __name__=='__main__':
     try:
         check_frequency=30
         loops = int(60 * 60 / check_frequency) + 1
-        print(loops)
+        print(f'{loops} loops')
         for i in range(loops):
             start = dt.datetime.now()
             check()
@@ -144,7 +145,7 @@ if __name__=='__main__':
                 continue
             else:
                 sleep_time = int(check_frequency-seconds_elapsed)
-                print(f'sleeping for {sleep_time}')
+                #print(f'sleeping for {sleep_time}')
                 sleep(sleep_time)
     except:
         traceback.print_exc()

@@ -16,6 +16,7 @@ from util.ansi_colour import *
 import platform
 import subprocess
 import urllib3
+import inspect
 
 
 # import this variable when using the class Snkr
@@ -41,7 +42,9 @@ class Bot:
 
     @timer
     def __init__(self, driver_path, headless=False):
-        # set the brower object and find function types
+        self.init(driver_path,headless=headless)
+
+    def init(self, driver_path,headless=False):
         options = Options()
         options.headless = headless
         ##anti detection
@@ -66,12 +69,21 @@ class Bot:
         self.verification_types={'xpath': By.XPATH}
         prints('finished init with', driver_path)
 
+    def restart(self):
+        print('resetting chromedriver')
+        self.clean_up()
+        self.init(self.driver_path, headless=self.headless)
+
     def clean_up(self):
+        if self.browser is None:
+            print('skipping clean_up')
+            return
         print('CLEANING UP SELENIUM')
         try:
             self.browser.close()
             sleep(3)
             self.browser.quit()
+            self.browser=None
             if platform.system() == "Windows":
                 stdout = subprocess.check_output("taskkill /im chromedriver.exe /f", shell=True).decode()
                 print(stdout)
@@ -217,7 +229,9 @@ class Bot:
     @timer
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
-        print('URL:', self.browser.current_url)
+        if self.current_url != self.browser.current_url:
+            self.current_url = self.browser.current_url
+            print('URL:', self.browser.current_url)
         wait_time=3
         element = action.__self__
         if retries >MAX_RETRY:
@@ -289,7 +303,8 @@ class Bot:
                 type = verification.type
                 text = verification.text
                 self.verify(verification)
-            prints('finding element %s by %s' % (text, type))
+            if retries==0:
+                prints('finding element %s by %s' % (text, type))
             func = self.types[type]
             element = func(text)
             self.current_element=element

@@ -23,6 +23,7 @@ class LV(Bot):
         self.person=person
         self.items=0
 
+
     def get_errors(self):
         error_list={'This product is out of stock': 'out of stock'}
         html = self.browser.page_source
@@ -196,7 +197,7 @@ class LV(Bot):
 if __name__=='__main__':
     me = Yi(sys.argv[1])
     lv = LV('../chromedriver.exe',me, headless=True)
-    bot.AUTO_QUIT=False
+    bot.AUTO_QUIT=True
     lv.visit_site('http://bvgrth.blogspot.com/2018/08/selenium-is-unable-to-extract-page.html')
     try:
         #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
