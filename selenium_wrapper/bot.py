@@ -12,9 +12,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.options import Options
 from util.decorators import *
+from util.ansi_colour import *
 import platform
 import subprocess
 import urllib3
+
 
 # import this variable when using the class Snkr
 Verification = namedtuple('Verification', 'type text')
@@ -188,10 +190,11 @@ class Bot:
             myElem = WebDriverWait(self.browser, delay).until(EC.element_to_be_clickable((method, text)))
             return True
         except TimeoutException:
-            prints('timed out waiting for element %s to show up' % text)
+            #todo
+            self.action_ctx.append('timed out waiting for element %s to show up' % text)
             return False
         except Exception as e:
-            #traceback.print_exc()
+            self.action_ctx.append(red(e))
             return False
 
     def generate_action_name(self, element, act):
@@ -207,6 +210,10 @@ class Bot:
         except:
             return '%s on %s' % (act, 'unknown element')
 
+    def print_ctx(self,ctx):
+        msg = '\n    '.join(ctx)
+        print(msg)
+
     @timer
     def action(self, action, *args, verification=None, input_box_verification = None, action_name=None, retries = 0):
         #if input_box_verification is passed auto check if text is entered
@@ -215,13 +222,14 @@ class Bot:
         element = action.__self__
         if retries >MAX_RETRY:
             #traceback.print_exc()
-            print(f'max retry of {action_name} has been exceeded, exiting')
-            print('last know exception:', self.last_exception)
+            self.action_ctx.append(red(f'FAILED to perform {action_name} after {retries + 1} tries'))
+            self.action_ctx.append(f'last know exception: {self.last_exception}')
+            self.print_ctx(self.action_ctx)
             raise MaxRetryExceeded
         if action_name is None:
             action_name = self.generate_action_name(element, action.__qualname__)
-        print(action_name)
-
+        if retries == 0:
+            self.action_ctx=[f'    Action Log : {action_name}', ]
         try:
             action(*args)
         except (ElementClickInterceptedException, ElementNotVisibleException, ElementNotInteractableException) as e:
@@ -235,7 +243,6 @@ class Bot:
                                action_name=action_name,retries = retries +1)
         except Exception as e:
             self.last_exception = e
-            prints('failed perform %s' % action_name)
             error_msg = str(e)
             if 'Other element would receive the click' in error_msg:
                 #self.browser.fullscreen_window()
@@ -244,17 +251,18 @@ class Bot:
                 return self.action(action, *args, verification=verification,
                                    input_box_verification=input_box_verification, action_name=action_name,retries = retries +1)
             else:
-                # traceback.print_exc()
+                self.action_ctx.append(red(f'failed perform {action_name} after {retries + 1} tries with exception: {e}'))
+                self.print_ctx(self.action_ctx)
                 raise
 
         if verification:
             # todo add a fail element (where if the element is found return fail right away)
             success = self.verify(verification)
             if success:
-                prints('successfully performed %s' % action_name)
+                prints(green(f'successfully performed {action_name} after {retries +1} tried'))
                 return True
             else:
-                prints('failed to verify that we performed %s' % action_name)
+                #prints('failed to verify that we performed %s' % action_name)
                 sleep(wait_time)
                 self.action(action, *args, verification=verification, input_box_verification=input_box_verification, action_name=action_name, retries=retries+1)
                 return False
@@ -263,13 +271,13 @@ class Bot:
             text = args[0]
             entered_text = element.get_attribute('value')
             if entered_text != text:
-                prints('tried perform %s but text is not entered, clearing and retrying...' % action_name)
+                self.action_ctx.append('tried perform %s but text is not entered, clearing and retrying...' % action_name)
                 element.clear()
                 self.action(action, *args, verification=verification, input_box_verification=input_box_verification,
                             action_name=action_name, retries=retries + 1)
                 raise
             else:
-                prints('successfully performed %s' % action_name)
+                prints(green(f'successfully performed {action_name} after {retries + 1} tried'))
                 return True
     @timer
     def find(self,type=None, text=None, verification=None, retries=0):
@@ -287,11 +295,11 @@ class Bot:
             self.current_element=element
             return element
         except NoSuchElementException:
-            prints('failed to find elment %s by %s' % (text, type))
             if retries>MAX_RETRY:
+                prints(f'failed to find elment {text} by {type} after {retries+1} tries')
                 raise
             else:
-                self.find(type=type, text=text, verification=verification, retries=retries+1)
+                return self.find(type=type, text=text, verification=verification, retries=retries+1)
         except Exception as e:
             #traceback.print_exc()
             raise
