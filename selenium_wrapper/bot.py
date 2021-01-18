@@ -40,10 +40,10 @@ def prints(*args):
 
 class Bot:
 
-    @timer
     def __init__(self, driver_path, headless=False):
         self.init(driver_path,headless=headless)
 
+    @timer
     def init(self, driver_path,headless=False):
         options = Options()
         options.headless = headless
