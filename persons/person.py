@@ -24,7 +24,6 @@ class Person():
     def __init__(self, csv, **kwargs):
         self.csv=csv
         self.__dict__.update(kwargs)
-        print(type(kwargs))
 
     def get_LV_acc(self):
         #todo

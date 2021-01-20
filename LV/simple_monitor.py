@@ -10,6 +10,7 @@ import traceback
 from persons.yi import *
 from util.ansi_colour import *
 from util.request_bot import Requests_bot
+from pprint import pprint
 
 
 MESSENGER_LIST={'Katherine Nguyen': '100003870432163',
@@ -150,6 +151,7 @@ if __name__=='__main__':
         traceback.print_exc()
     finally:
         lv_client.clean_up()
+        pprint(lv_client.summary)
 
         ##todo summery table
 

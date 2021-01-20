@@ -16,7 +16,7 @@ class LV(Bot):
         super(LV, self).__init__(driver_path, headless=headless)
         self.person=person
         self.items=0
-
+        self.summary={}
 
     def get_errors(self):
         error_list={'This product is out of stock': 'out of stock'}
@@ -25,7 +25,6 @@ class LV(Bot):
             if key in html:
                 return f'{val}, FULL ELEMENT: {html[html.index(key)-15:html.index(key)+len(key)+15]}'
 
-
     def log_in(self):
         acc_input = self.find(verification=v_acc)
         self.action(acc_input.send_keys, self.person.get_LV_acc().username, input_box_verification=True)
@@ -33,8 +32,6 @@ class LV(Bot):
         self.action(acc_pwd_input.send_keys, self.person.get_LV_acc().pwd, input_box_verification=True)
         acc_sign_in = self.find(verification=v_sign_in)
         self.action(acc_sign_in.click, verification=v_proceed, action_name='proceed to billing')
-
-
 
     def fill_credit_card(self):
         card_num_input = self.find(verification=v_credit_card_num)
@@ -85,6 +82,7 @@ class LV(Bot):
 
     @error_handler
     def atc(self, product_url):
+        self.product_url = product_url
         self.visit_site(product_url, v_atc)
         atc_btn = self.find(verification=v_atc)
         if atc_btn.text == 'Call for Availability':
@@ -109,9 +107,6 @@ class LV(Bot):
 
         if pick_up_btn is None:
             pass
-            # print('no pickup')
-            # exit(0)
-            # self.enter_billing_info()
         else:
             sleep(5)
             print(blue('slight wait before collecting in store'))
@@ -141,11 +136,7 @@ class LV(Bot):
         submit_order_btn = self.find(verification=v_submit_order)
         self.action(submit_order_btn.click,  action_name='clicking SUBMIT ORDER')
 
-
 if __name__=='__main__':
-    # e = UnavailableException(magenta(f'Place to cart resulted in '))
-    # print(f'{e}:')
-    # exit(0)
     me = Yi(sys.argv[1])
     lv = LV('../chromedriver.exe',me, headless=False)
     bot.AUTO_QUIT=True
