@@ -5,7 +5,7 @@ from notifications.mails import Email
 from notifications.discord import send_webhook
 from time import sleep
 import datetime as dt
-from LV import LV_main, LV_selenium
+from LV import exception_handling, LV_selenium
 import traceback
 from persons.yi import *
 from util.ansi_colour import *

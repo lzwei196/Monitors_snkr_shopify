@@ -1,5 +1,7 @@
 from selenium_wrapper.bot import *
 from selenium_wrapper import bot
+from LV.web_elements import *
+from LV.exception_handling import *
 from time import sleep
 import platform
 from persons.yi import Yi
@@ -8,16 +10,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 from util.ansi_colour import *
 
-
-class UnavailableException(Exception):
-    def __init__(self, msg):
-        super().__init__(msg)
-
 class LV(Bot):
-    v_credit_card_num = Verification(type='xpath', text='//*[@id="creditCardNumber"]')
-    v_proceed = Verification(type='xpath', text='//*[@id="globalSubmit"]')
-    v_FirstName = Verification(type='xpath', text='//*[@id="firstName"]')
-
 
     def __init__(self, driver_path, person, headless=False):
         super(LV, self).__init__(driver_path, headless=headless)
@@ -34,12 +27,6 @@ class LV(Bot):
 
 
     def log_in(self):
-        v_acc = Verification(type='xpath', text='//*[@id="loginloginForm"]')
-        v_acc_pwd = Verification(type='xpath', text='//*[@id="passwordloginForm"]')
-        v_sign_in = Verification(type='xpath', text='//*[@id="loginSubmit_"]')
-        v_proceed = self.v_proceed
-        # v_credit_card_num = self.v_credit_card_num
-
         acc_input = self.find(verification=v_acc)
         self.action(acc_input.send_keys, self.person.get_LV_acc().username, input_box_verification=True)
         acc_pwd_input = self.find(verification=v_acc_pwd)
@@ -50,12 +37,6 @@ class LV(Bot):
 
 
     def fill_credit_card(self):
-        v_credit_card_num = self.v_credit_card_num
-        v_credit_card_holder = Verification(type='xpath', text='//*[@id="creditCardHoldersName"]')
-        v_credit_card_month = Verification(type='xpath', text='//*[@id="expirationMonth"]')
-        v_credit_card_year = Verification(type='xpath', text='//*[@id="expirationYear"]')
-        v_credit_card_csv = Verification(type='xpath', text='//*[@id="cardVerificationNumber_0"]')
-
         card_num_input = self.find(verification=v_credit_card_num)
         self.action(card_num_input.send_keys, self.person.card_num, input_box_verification=True)
         card_holder_input = self.find(verification=v_credit_card_holder)
@@ -83,14 +64,6 @@ class LV(Bot):
         self.action(holt_renfrew_radio.click)
 
     def enter_billing_info(self):
-        v_FirstName = self.v_FirstName
-        v_LastName = Verification(type='xpath', text='//*[@id="lastName"]')
-        v_address = Verification(type='xpath', text='//*[@id="address1"]')
-        v_postalcode = Verification(type='xpath', text='//*[@id="postalCode"]')
-        v_city = Verification(type='xpath', text='//*[@id="city"]')
-        v_phone = Verification(type='xpath', text='//*[@id="phoneNumber"]')
-        v_state = Verification(type='xpath', text='//*[@id="state"]')
-
         me = self.person
         fields = {v_FirstName:me.firstName,
                   v_LastName:me.lastName,
@@ -110,35 +83,17 @@ class LV(Bot):
         #using BC here because in html value=BC,
         self.action(select.select_by_value, me.province)
 
+    @error_handler
     def atc(self, product_url):
-        v_atc = Verification(type='xpath', text='//*[@class="lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth"]')
-        v_view_cart = Verification(type='xpath', text='//*[contains(text(), "View my cart")]')
-        v_proceed_1 = Verification(type='xpath', text='//*[@id="proceedToCheckoutButtonTop"]')
-        v_sign_in = Verification(type='xpath', text='//*[@id="loginSubmit_"]')
-        v_cfa = Verification(type='xpath',
-                             text='//*[@class=""lv-product-purchase-button lv-button -primary lv-product-purchase__button -fullwidth -no-pointer""]')
-        v_out_of_stock = Verification(type='xpath', text='//*[@id="lv-product-add-to-cart__error"]')
+        self.visit_site(product_url, v_atc)
+        atc_btn = self.find(verification=v_atc)
+        if atc_btn.text == 'Call for Availability':
+            raise UnavailableException(magenta(f"WARNING: {product_url} atc button appears to say Call for Availability"))
 
-        try:
-            self.visit_site(product_url, v_atc)
-            atc_btn = self.find(verification=v_atc)
-            if atc_btn.text == 'Call for Availability':
-                raise UnavailableException(magenta(f"WARNING: {product_url} atc button appears to say Call for Availability"))
-
-            self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
-            view_vart_btn = self.find(verification=v_view_cart)
-            self.action(view_vart_btn.click, verification=v_proceed_1, action_name='view bag')
-            proceed_btn = self.find(verification=v_proceed_1)
-        except:
-            try:
-                msg = magenta(f'Place to Cart not available.....')
-                cfa_btn = self.find(verification=v_cfa)
-                msg = magenta(f'Place to Cart not available, only have {cfa_btn.text}"')
-            except:
-                oos_btn = self.find(verification=v_out_of_stock)
-                msg = magenta(f'Place to cart resulted in {oos_btn.text}')
-            finally:
-                raise UnavailableException(msg)
+        self.action(atc_btn.click, verification=v_view_cart, action_name='placing to cart')
+        view_vart_btn = self.find(verification=v_view_cart)
+        self.action(view_vart_btn.click, verification=v_proceed_1, action_name='view bag')
+        proceed_btn = self.find(verification=v_proceed_1)
 
         self.action(proceed_btn.click, verification=v_sign_in, action_name='proceed')
         self.log_in()
@@ -162,14 +117,6 @@ class LV(Bot):
             print(blue('slight wait before collecting in store'))
             self.choose_pickup_location(pick_up_btn)
             pick_up_btn=True
-
-        #rest of the workflow
-        v_proceed = self.v_proceed
-        v_credit_card_num = self.v_credit_card_num
-        v_agree_to_terms = Verification(type='xpath', text='//*[@data-evt-content-id="terms_of_sales"]')
-        v_submit_order = Verification(type='xpath', text='//*[@id="globalSubmitTop"]')
-        v_delivery = Verification(type='xpath', text='//*[@id="standardShipping"]')
-        v_select_address = Verification(type='xpath', text='//*[@id="selectAnAddress"]')
 
         # self.browser.execute_script(
         #     "fireEvent('proceedToBilling');startChain()")
@@ -200,15 +147,14 @@ if __name__=='__main__':
     # print(f'{e}:')
     # exit(0)
     me = Yi(sys.argv[1])
-    lv = LV('../chromedriver.exe',me, headless=True)
+    lv = LV('../chromedriver.exe',me, headless=False)
     bot.AUTO_QUIT=True
-    lv.visit_site('http://bvgrth.blogspot.com/2018/08/selenium-is-unable-to-extract-page.html')
     try:
         #lv.atc('https://ca.louisvuitton.com/eng-ca/products/my-everything-duo-xs-monogram-shawl-nvprod2540101v')
-        #lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
-        lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
+        lv.atc('https://ca.louisvuitton.com/eng-ca/products/spring-street-monogram-vernis-nvprod1280190v')
+        #lv.atc('https://ca.louisvuitton.com/eng-ca/products/mini-pochette-accessoires-monogram-001025')
         lv.purchase()
-    except:
-        lv.save_page('test.html')
+    except UnavailableException as e:
+        print(e)
 
     #taskkill /im chromedriver.exe /f

@@ -67,6 +67,7 @@ class Bot:
         #simmilar idea as above
         # todo, incompleted list of By types
         self.verification_types={'xpath': By.XPATH}
+        self.action_ctx=[]
         prints('finished init with', driver_path)
 
     def restart(self):
@@ -303,21 +304,21 @@ class Bot:
                 type = verification.type
                 text = verification.text
                 self.verify(verification)
-            if retries==0:
-                prints('finding element %s by %s' % (text, type))
+            # if retries==0:
+            #     prints('finding element %s by %s' % (text, type))
             func = self.types[type]
             element = func(text)
             self.current_element=element
             return element
         except NoSuchElementException:
-            if retries>MAX_RETRY:
+            if retries>=MAX_RETRY:
                 prints(f'failed to find elment {text} by {type} after {retries+1} tries')
                 raise
             else:
                 return self.find(type=type, text=text, verification=verification, retries=retries+1)
         except Exception as e:
             #traceback.print_exc()
-            raise
+            raise e
 
 
 
