@@ -9,15 +9,19 @@ class UnavailableException(Exception):
 
 def handle_atc(self):
     msg = magenta(f'Place to Cart not available.....but was unable to pin point the exact error')
-    verifications=[v_cfa,v_out_of_stock,v_status_500, v_notify_me, v_call_for_ava]
-    for verification in verifications:
+    verifications={v_cfa:'call for availability',
+                   v_call_for_ava:'call for availability',
+                   v_out_of_stock:'out of stock ',
+                   v_status_500:'status 500 after clicking atc',
+                   v_notify_me:'notify me',}
+    for verification, name in verifications.items():
         element = has_element(self, verification)
         if element is False:
             continue
         else:
             text = element.text
             if text == '':
-                text = verification.text
+                text = name
             msg = magenta(f'Place to Cart not available, only have {text}"')
             if verification == v_status_500:
                 pass
