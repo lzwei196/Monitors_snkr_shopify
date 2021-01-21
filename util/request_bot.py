@@ -14,6 +14,7 @@ class StatusCodeAbove400(Exception):
     def __init__(self, response, message='this outgoing request received a status > 400'):
         super().__init__(message)
         self.response = response
+        print(red(response.text))
 
 class MaxRetryReached(Exception):
     def __init__(self, url, message=None):
@@ -69,10 +70,9 @@ class Requests_bot():
             self.print(f'sending {method} request to {url}')
             function = self.REQUEST_METHOD[method]
             response = function(url, **kwargs)
-            self.print(f'{green(response)} {url}')
             if response.status_code >=400:
-                print(response.text)
                 raise StatusCodeAbove400(response)
+            self.print(f'{green(response)} {url}')
             return response
         except KeyError:
             print(f'unsupported method {method}')

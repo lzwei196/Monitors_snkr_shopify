@@ -18,6 +18,13 @@ class LV(Bot):
         self.items=0
         self.summary={}
 
+    def print_summary(self):
+        print(blue('RUN SUMMARY'))
+        for item, fails in self.summary.items():
+            print(f'\t{item}')
+            for reason, counts in fails.items():
+                print(f'\t\t{reason}: {counts}')
+
     def get_errors(self):
         error_list={'This product is out of stock': 'out of stock'}
         html = self.browser.page_source

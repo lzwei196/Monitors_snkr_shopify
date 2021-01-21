@@ -18,7 +18,7 @@ def handle_atc(self):
             text = element.text
             if text == '':
                 text = verification.text
-            msg = magenta(f'Place to Cart not available, only have {element.text}"')
+            msg = magenta(f'Place to Cart not available, only have {text}"')
             if verification == v_status_500:
                 pass
                 #todo do refresh and retries here
@@ -38,7 +38,7 @@ def update_summary(self, reason):
         if reason in nested_dict:
             nested_dict[reason] += 1
         else:
-            nested_dict[reason] = 0
+            nested_dict[reason] = 1
     else:
         self.summary[self.product_url] = {reason: 1}
 

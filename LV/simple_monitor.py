@@ -151,7 +151,7 @@ if __name__=='__main__':
         traceback.print_exc()
     finally:
         lv_client.clean_up()
-        pprint(lv_client.summary)
+        lv_client.print_summary()
 
         ##todo summery table
 
